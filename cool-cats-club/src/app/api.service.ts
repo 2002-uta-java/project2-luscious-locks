@@ -8,9 +8,9 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient) { }
 
+  usersUrl: string = 'https://jsonplaceholder.typicode.com/users';
   
-  public getUsers(baseUrl){
-    return this.httpClient.get(baseUrl);
-
+  public getUsers(){
+    return this.httpClient.get(this.usersUrl);
   }
 }

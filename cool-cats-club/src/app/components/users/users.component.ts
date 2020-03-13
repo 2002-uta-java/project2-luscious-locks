@@ -10,12 +10,10 @@ export class UsersComponent implements OnInit {
 
   users;
 
-  baseUrl: string = 'https://jsonplaceholder.typicode.com/users';
-
   constructor(private apiService: ApiService) { }
 
   ngOnInit(){
-    this.apiService.getUsers(this.baseUrl).subscribe((data)=>{
+    this.apiService.getUsers().subscribe((data)=>{
       console.log(data);
       this.users = data;
     })

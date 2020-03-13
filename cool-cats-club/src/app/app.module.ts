@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -22,7 +23,7 @@ import { UsersComponent } from './components/users/users.component';
   imports: [
     BrowserModule,
     RouterModule.forRoot([{
-        path: '',
+        path: 'home',
         component: HomepageComponent
       },{
         path: 'signin',
@@ -30,8 +31,12 @@ import { UsersComponent } from './components/users/users.component';
       },{
         path: 'signup',
         component: SignupFormComponent
+      },{
+        path: '',
+        component: LoginFormComponent
       }]),
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
