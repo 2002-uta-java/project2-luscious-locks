@@ -20,7 +20,7 @@ export class ApiService {
 
   public getImages(){
     const params:HttpParams = new HttpParams()
-    .set("" , "");
+    .set("Authorization" , "17f9f5c7c047c939dfefaed4d541bf2c1a23fde4");
     return this.httpClient.get(this.apiGetUrl,{params});
   }
 }
