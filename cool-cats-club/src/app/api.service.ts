@@ -10,7 +10,7 @@ export class ApiService {
 
   usersUrl: string = 'https://jsonplaceholder.typicode.com/users';
 
-  apiUrl: string = '';
+  apiUrl: string = ' ';
   
   public getUsers(){
     return this.httpClient.get(this.usersUrl);
