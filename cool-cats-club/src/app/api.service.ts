@@ -10,7 +10,9 @@ export class ApiService {
 
   usersUrl: string = 'https://jsonplaceholder.typicode.com/users';
 
-  apiUrl: string = ' ';
+  apiPostUrl: string = 'https://api.imgur.com/3/upload';
+
+  apiGetUrl: string = 'https://api.imgur.com/3/account/me/images';
   
   public getUsers(){
     return this.httpClient.get(this.usersUrl);
