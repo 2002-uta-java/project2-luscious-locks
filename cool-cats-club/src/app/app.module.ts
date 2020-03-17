@@ -10,6 +10,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { UsersComponent } from './components/users/users.component';
+import { ImagesComponent } from './components/images/images.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { UsersComponent } from './components/users/users.component';
     SignupFormComponent,
     NavigationComponent,
     HomepageComponent,
-    UsersComponent
+    UsersComponent,
+    ImagesComponent
   ],
   imports: [
     BrowserModule,
