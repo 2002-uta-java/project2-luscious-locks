@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -23,8 +23,6 @@ export class ApiService {
   }
 
   public getImages(){
-    const params:HttpParams = new HttpParams()
-    .set("Authorization" , "17f9f5c7c047c939dfefaed4d541bf2c1a23fde4");
-    return this.httpClient.get(this.apiGetUrl,{params});
+    return this.httpClient.get(this.apiGetUrl,{ headers: new HttpHeaders().set('Authorization', this.accessToken1)});
   }
 }
