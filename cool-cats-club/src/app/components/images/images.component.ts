@@ -13,9 +13,12 @@ export class ImagesComponent implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit(){
-    this.apiService.getImages().subscribe((data)=>{
+    this.apiService.getImages().subscribe(
+      (data)=>{
       console.log(data);
       this.images = data;
+      this.images = this.images.data;
+      console.log(this.images);
     })
   }
 

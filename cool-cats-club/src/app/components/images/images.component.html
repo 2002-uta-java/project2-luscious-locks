@@ -1,8 +1,8 @@
 <div class="container">
-    <h2 class="text-center">All Users</h2>
+    <h2 class="text-center">Images ID</h2>
     <ul *ngFor="let image of images">
         <li>
-            {{image.id}}
+            <img src={{image.link}} width="120" height="120">
         </li>
     </ul>
 </div>

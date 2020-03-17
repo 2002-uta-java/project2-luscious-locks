@@ -13,7 +13,8 @@ export class UsersComponent implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit(){
-    this.apiService.getUsers().subscribe((data)=>{
+    this.apiService.getUsers().subscribe(
+      (data)=>{
       console.log(data);
       this.users = data;
     })
