@@ -30,6 +30,11 @@ export class ImagesComponent implements OnInit {
       this.images = this.images.data;
       console.log(this.images);
     })
+
+    // this.apiService.deleteImage('k65mhSB').subscribe(
+    //   (data)=>{
+    //   console.log(data);
+    // })
   }
 
 }

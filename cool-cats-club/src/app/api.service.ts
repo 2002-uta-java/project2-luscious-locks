@@ -17,7 +17,7 @@ export class ApiService {
 
   apiImageUrl: string = 'https://api.imgur.com/3/image';
 
-  // Bearer token used when authorizing access to an imgur account (ie. getImages() and postImages())
+  // Bearer token used when authorizing access to an imgur account (ie. getImages(), postImages(), deleteImage())
   accessToken: string = '17f9f5c7c047c939dfefaed4d541bf2c1a23fde4';
 
   // Client-ID token used for anonymous access (ie. getImage())
@@ -43,5 +43,9 @@ export class ApiService {
     formData.append('title', title);
     formData.append('description', description);
     return this.httpClient.post(this.apiImageUrl, formData, { headers: new HttpHeaders().set('Authorization', `Bearer ${this.accessToken}`)});
+  }
+
+  public deleteImage(imageId){
+    return this.httpClient.delete(`${this.apiImageUrl}/${imageId}`,{ headers: new HttpHeaders().set('Authorization', `Bearer ${this.accessToken}`)});
   }
 }
