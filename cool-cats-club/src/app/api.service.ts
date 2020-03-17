@@ -30,6 +30,6 @@ export class ApiService {
   }
 
   public getImage(imageHash){
-    return this.httpClient.get(`this.apiGetUrl${imageHash}`,{ headers: new HttpHeaders().set('Authorization', `Client-ID ${this.clientId}`)});
+    return this.httpClient.get(`this.apiGetUrl/${imageHash}`,{ headers: new HttpHeaders().set('Authorization', `Client-ID ${this.clientId}`)});
   }
 }
