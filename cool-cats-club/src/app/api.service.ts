@@ -20,6 +20,9 @@ export class ApiService {
 
   // Client-ID token when authorizing getting or posting an image
   clientId: string = '546c25a59c58ad7';
+
+  catImg: string = 'https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg';
+  imgName: string = 'kitty';
   
   public getUsers(){
     return this.httpClient.get(this.usersUrl);
@@ -30,6 +33,13 @@ export class ApiService {
   }
 
   public getImage(imageHash){
-    return this.httpClient.get(`this.apiGetUrl/${imageHash}`,{ headers: new HttpHeaders().set('Authorization', `Client-ID ${this.clientId}`)});
+    return this.httpClient.get(`${this.apiGetUrl}/${imageHash}`,{ headers: new HttpHeaders().set('Authorization', `Client-ID ${this.clientId}`)});
+  }
+
+  public postImage(image, title){
+    const formData = new FormData();
+    formData.append('image', this.catImg);
+    formData.append('name', this.imgName);
+    return this.httpClient.post(this.apiPostUrl, formData, { headers: new HttpHeaders().set('Authorization', `Client-ID ${this.clientId}`)});
   }
 }
