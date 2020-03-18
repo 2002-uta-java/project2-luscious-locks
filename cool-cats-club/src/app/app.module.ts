@@ -11,6 +11,10 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { UsersComponent } from './components/users/users.component';
 import { ImagesComponent } from './components/images/images.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileInfoComponent } from './components/profile-info/profile-info.component';
+import { ProfilePicturesComponent } from './components/profile-pictures/profile-pictures.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +24,11 @@ import { ImagesComponent } from './components/images/images.component';
     NavigationComponent,
     HomepageComponent,
     UsersComponent,
-    ImagesComponent
+    ImagesComponent,
+    DashboardComponent,
+    ProfileComponent,
+    ProfileInfoComponent,
+    ProfilePicturesComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +44,16 @@ import { ImagesComponent } from './components/images/images.component';
       },{
         path: '',
         component: LoginFormComponent
-      }]),
+      },{
+        path: 'users',
+        component: UsersComponent
+    },{
+        path: 'images',
+        component: ImagesComponent
+    },{
+        path: 'profile',
+        component: ProfileComponent
+    }]),
     HttpClientModule,
     FormsModule
   ],

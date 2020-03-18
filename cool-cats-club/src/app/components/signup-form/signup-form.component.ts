@@ -8,11 +8,10 @@ import { ApiService } from './../../api.service';
   styleUrls: ['./signup-form.component.css']
 })
 export class SignupFormComponent implements OnInit {
-
   users:any;
 
   username:string = "";
-  
+
   password:string = "";
 
   taken: boolean = false;
