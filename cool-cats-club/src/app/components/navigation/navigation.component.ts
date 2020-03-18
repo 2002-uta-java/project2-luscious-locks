@@ -22,11 +22,13 @@ export class NavigationComponent implements OnInit {
   goHome(){
     this.homeClass = "nav-link active";
     this.profileclass = "nav-link";
+    this.router.navigate(['/home']);
   }
 
   showProfile(){
     this.homeClass = "nav-link";
     this.profileclass = "nav-link active";
+    this.router.navigate(['/profile']);
   }
 
   signOut(){
