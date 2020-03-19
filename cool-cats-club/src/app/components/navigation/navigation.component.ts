@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  isSignedIn:boolean = true;
+  isSignedIn:boolean = false;
 
   homeClass:string = "nav-link";
 
