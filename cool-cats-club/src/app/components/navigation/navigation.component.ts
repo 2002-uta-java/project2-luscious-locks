@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { SharedService } from './../../shared.service';
 
 @Component({
   selector: 'app-navigation',
@@ -8,13 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  isSignedIn:boolean = true;
+  isSignedIn:boolean = false;
 
-  homeClass:string = "nav-link";
+  homeClass:string = "nav-link active";
 
   profileclass:string = "nav-link";
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, private sharedService: SharedService) {
+    this.sharedService.isSignedInData.subscribe(
+      (data: boolean) => {
+        this.isSignedIn = data;
+      }
+    );
+  }
 
   ngOnInit(): void {
   }
@@ -32,6 +39,8 @@ export class NavigationComponent implements OnInit {
   }
 
   signOut(){
+    this.homeClass = "nav-link active";
+    this.profileclass = "nav-link";
     this.router.navigate(['/signin']);
     this.setSignIn(false);
   }
