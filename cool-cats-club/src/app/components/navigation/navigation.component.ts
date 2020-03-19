@@ -11,7 +11,7 @@ export class NavigationComponent implements OnInit {
 
   isSignedIn:boolean = false;
 
-  homeClass:string = "nav-link";
+  homeClass:string = "nav-link active";
 
   profileclass:string = "nav-link";
 
