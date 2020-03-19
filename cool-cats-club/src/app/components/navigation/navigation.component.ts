@@ -39,6 +39,8 @@ export class NavigationComponent implements OnInit {
   }
 
   signOut(){
+    this.homeClass = "nav-link active";
+    this.profileclass = "nav-link";
     this.router.navigate(['/signin']);
     this.setSignIn(false);
   }
