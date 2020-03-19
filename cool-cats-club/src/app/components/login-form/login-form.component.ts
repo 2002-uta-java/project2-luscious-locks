@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from './../../api.service';
+import { SharedService } from './../../shared.service';
 
 @Component({
   selector: 'app-login-form',
@@ -17,7 +18,7 @@ export class LoginFormComponent implements OnInit {
 
   found: boolean = false;
 
-  constructor(private apiService: ApiService, public router: Router) { }
+  constructor(private apiService: ApiService,  private sharedService: SharedService, public router: Router) { }
 
   ngOnInit(): void {
   }
@@ -31,6 +32,7 @@ export class LoginFormComponent implements OnInit {
         if(user.username === this.username){
           this.router.navigate(['/home']);
           this.found = true;
+          this.sharedService.isSignedInData.emit(this.found);
         }
       }
       if(!this.found)

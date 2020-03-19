@@ -16,6 +16,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ProfileInfoComponent } from './components/profile-info/profile-info.component';
 import { ProfilePicturesComponent } from './components/profile-pictures/profile-pictures.component';
 
+import { SharedService } from './shared.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +59,7 @@ import { ProfilePicturesComponent } from './components/profile-pictures/profile-
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
