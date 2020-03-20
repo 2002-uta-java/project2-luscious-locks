@@ -17,7 +17,6 @@ export class ImagesComponent implements OnInit {
     //   (data)=>{
     //   console.log(data);
     // })
-
     this.apiService.getImage('XLfaJkK').subscribe(
       (data)=>{
       console.log(data);

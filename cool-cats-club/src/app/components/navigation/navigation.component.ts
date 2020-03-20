@@ -1,3 +1,4 @@
+import { UserSessionService } from './../../Services/user-session.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../Services/shared.service';
@@ -52,6 +53,7 @@ export class NavigationComponent implements OnInit {
     this.homeClass = "nav-link active";
     this.profileclass = "nav-link";
     this.router.navigate(['/signin']);
+    this.userSession.clearToken();
     this.setSignIn(false);
   }
 
