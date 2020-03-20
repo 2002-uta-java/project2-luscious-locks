@@ -16,8 +16,6 @@ export class NavigationComponent implements OnInit {
 
   profileclass:string = "nav-link";
 
-
-  
   constructor(public router: Router, private sharedService: SharedService, private userSession :UserSessionService) {
     this.sharedService.isSignedInData.subscribe(
       (data: boolean) => {
