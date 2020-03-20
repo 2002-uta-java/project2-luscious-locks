@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
+import { SharedService } from '../../Services/shared.service';
 
 @Component({
   selector: 'app-signup-form',
@@ -16,7 +17,7 @@ export class SignupFormComponent implements OnInit {
 
   taken: boolean = false;
 
-  constructor(private apiService: ApiService, public router: Router) { }
+  constructor(private apiService: ApiService, private sharedService: SharedService, public router: Router) { }
 
   ngOnInit(): void {
   }
@@ -34,6 +35,7 @@ export class SignupFormComponent implements OnInit {
         //post request to persist user
         //Store user token to maintain session
         this.router.navigate(['/home']);
+        this.sharedService.isSignedInData.emit(true);
       }
     })
   }

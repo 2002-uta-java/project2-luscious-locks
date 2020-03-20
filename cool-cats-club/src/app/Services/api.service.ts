@@ -36,9 +36,10 @@ export class ApiService {
   }
   
   // need image parameter, others are optional; returns 200 on success :)
-  public postImage(image, name, title, description){
+  public postImage(image, type='file', name='', title='', description=''){
     const formData = new FormData();
     formData.append('image', image);
+    formData.append('type', type);
     formData.append('name', name);
     formData.append('title', title);
     formData.append('description', description);

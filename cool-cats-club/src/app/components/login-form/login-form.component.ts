@@ -21,6 +21,7 @@ export class LoginFormComponent implements OnInit {
   constructor(private apiService: ApiService,  private sharedService: SharedService, public router: Router) { }
 
   ngOnInit(): void {
+    this.sharedService.isSignedInData.emit(false);
   }
 
   authenticate(){

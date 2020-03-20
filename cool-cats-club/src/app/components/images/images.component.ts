@@ -13,7 +13,7 @@ export class ImagesComponent implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit(){
-    // this.apiService.postImage('https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg', '', '', '').subscribe(
+    // this.apiService.postImage('https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg').subscribe(
     //   (data)=>{
     //   console.log(data);
     // })
