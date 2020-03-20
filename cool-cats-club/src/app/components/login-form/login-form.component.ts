@@ -19,12 +19,13 @@ export class LoginFormComponent implements OnInit {
 
   found: boolean = false;
 
-  constructor(private apiService: ApiService,  private sharedService: SharedService,
-    private userSession: UserSessionService , public router: Router) { }
+  constructor(private apiService: ApiService,  private sharedService: SharedService, public router: Router, private userSession: UserSessionService) { }
 
   ngOnInit(): void {
+    this.sharedService.isSignedInData.emit(false);
     if(this.userSession.getToken()){
       this.router.navigate(['/home']);
+      this.sharedService.isSignedInData.emit(true);
     }
   }
 
@@ -38,9 +39,9 @@ export class LoginFormComponent implements OnInit {
         if(user.username === this.username /*&& user.password === this.password*/){
           this.router.navigate(['/home']);
           this.found = true;
-          this.sharedService.isSignedInData = (this.found);
+          this.sharedService.isSignedInData.emit(this.found);
           this.userSession.setToken(`${this.username}:${this.password}`);
-          console.log(this.userSession.getToken());
+          console.log("token: " + this.userSession.getToken());
         }
       }
       if(!this.found)
