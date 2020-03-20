@@ -9,7 +9,7 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  usersUrl: string = 'https://jsonplaceholder.typicode.com/users';
+  usersUrl: string = 'http://ec2-18-224-6-156.us-east-2.compute.amazonaws.com:8090/Proj2-0.0.1-SNAPSHOT/users';
 
   apiPostUrl: string = 'https://api.imgur.com/3/upload';
 
@@ -23,8 +23,10 @@ export class ApiService {
   // Client-ID token used for anonymous access (ie. getImage())
   clientId: string = '546c25a59c58ad7';
   
+  basicAuth: string = 'YnJpYW46d2hhdGV2';
+
   public getUsers(){
-    return this.httpClient.get(this.usersUrl);
+    return this.httpClient.get(this.usersUrl,{ headers: new HttpHeaders().set('Authorization', `Basic ${this.basicAuth}`)});
   }
 
   public getImages(){
