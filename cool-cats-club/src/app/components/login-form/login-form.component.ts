@@ -1,4 +1,3 @@
-import { UserSessionService } from './../../Services/user-session.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
@@ -19,13 +18,10 @@ export class LoginFormComponent implements OnInit {
 
   found: boolean = false;
 
-  constructor(private apiService: ApiService,  private sharedService: SharedService,
-    private userSession: UserSessionService , public router: Router) { }
+  constructor(private apiService: ApiService,  private sharedService: SharedService, public router: Router) { }
 
   ngOnInit(): void {
-    if(this.userSession.getToken()){
-      this.router.navigate(['/home']);
-    }
+    this.sharedService.isSignedInData.emit(false);
   }
 
   authenticate(){
@@ -34,13 +30,10 @@ export class LoginFormComponent implements OnInit {
       console.log(this.users);
       console.log(this.username + ", " + this.password);
       for(let user of this.users){
-        console.log(user);
-        if(user.username === this.username /*&& user.password === this.password*/){
+        if(user.username === this.username){
           this.router.navigate(['/home']);
           this.found = true;
-          this.sharedService.isSignedInData = (this.found);
-          this.userSession.setToken(`${this.username}:${this.password}`);
-          console.log(this.userSession.getToken());
+          this.sharedService.isSignedInData.emit(this.found);
         }
       }
       if(!this.found)

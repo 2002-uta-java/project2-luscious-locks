@@ -2,11 +2,16 @@
     <h2 class="text-center">All Users</h2>
     <ul *ngFor="let user of users">
         <li>
-            ID: {{user.id}}, 
-            Username: {{user.username}},
-            Muted: {{user.muted}},
-            Banned: {{user.banned}},
-            Moderator: {{user.moderator}}
+            {{user.id}}:
+            {{user.name}},
+            {{user.username}},
+            {{user.email}},
+            {{user.address.street}}
+            {{user.address.suite}},
+            {{user.address.city}}
+            {{user.address.zipcode}},
+            {{user.phone}},
+            {{user.webiste}}.
         </li>
     </ul>
 </div>
