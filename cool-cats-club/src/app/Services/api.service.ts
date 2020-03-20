@@ -9,7 +9,7 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  usersUrl: string = 'https://jsonplaceholder.typicode.com/users';
+  usersUrl: string = 'http://ec2-18-224-6-156.us-east-2.compute.amazonaws.com:8090/Proj2-0.0.1-SNAPSHOT/users';
 
   apiPostUrl: string = 'https://api.imgur.com/3/upload';
 
@@ -23,8 +23,10 @@ export class ApiService {
   // Client-ID token used for anonymous access (ie. getImage())
   clientId: string = '546c25a59c58ad7';
   
+  basicAuth: string = 'YnJpYW46d2hhdGV2';
+
   public getUsers(){
-    return this.httpClient.get(this.usersUrl);
+    return this.httpClient.get(this.usersUrl,{ headers: new HttpHeaders().set('Authorization', `Basic ${this.basicAuth}`)});
   }
 
   public getImages(){
@@ -36,10 +38,9 @@ export class ApiService {
   }
   
   // need image parameter, others are optional; returns 200 on success :)
-  public postImage(image, type='file', name='', title='', description=''){
+  public postImage(image, name, title, description){
     const formData = new FormData();
     formData.append('image', image);
-    formData.append('type', type);
     formData.append('name', name);
     formData.append('title', title);
     formData.append('description', description);

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from '../../Services/shared.service';
 
 @Component({
   selector: 'app-homepage',
@@ -8,12 +7,9 @@ import { SharedService } from '../../Services/shared.service';
 })
 export class HomepageComponent implements OnInit {
 
-  constructor(private sharedService: SharedService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.sharedService.isSignedInData.emit(true);
-    this.sharedService.homeClassData.emit("nav-link active");
-    this.sharedService.profileClassData.emit("nav-link");
   }
 
 }
