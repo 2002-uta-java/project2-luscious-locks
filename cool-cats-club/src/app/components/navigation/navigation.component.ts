@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from './../../shared.service';
+import { SharedService } from '../../Services/shared.service';
 
 @Component({
   selector: 'app-navigation',
@@ -19,6 +19,16 @@ export class NavigationComponent implements OnInit {
     this.sharedService.isSignedInData.subscribe(
       (data: boolean) => {
         this.isSignedIn = data;
+      }
+    );
+    this.sharedService.homeClassData.subscribe(
+      (data: string) => {
+        this.homeClass = data;
+      }
+    );
+    this.sharedService.profileClassData.subscribe(
+      (data: string) => {
+        this.profileclass = data;
       }
     );
   }

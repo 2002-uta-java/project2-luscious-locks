@@ -16,7 +16,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ProfileInfoComponent } from './components/profile-info/profile-info.component';
 import { ProfilePicturesComponent } from './components/profile-pictures/profile-pictures.component';
 
-import { SharedService } from './shared.service';
+import { SharedService } from './Services/shared.service';
 
 @NgModule({
   declarations: [

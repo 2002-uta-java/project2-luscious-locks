@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from './../../api.service';
-import { SharedService } from './../../shared.service';
+import { ApiService } from '../../Services/api.service';
+import { SharedService } from '../../Services/shared.service';
 
 @Component({
   selector: 'app-login-form',
