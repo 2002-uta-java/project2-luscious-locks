@@ -4,28 +4,33 @@
         <span>Username: </span>{{username}}
     </div>
     <div class="text-center">
-        <span>Password: </span>{{password}}
+        <span>Status: </span>{{status}}
     </div>
     <div class="text-center">
-        <button class="btn btn-lg btn-outline-primary">Edit Profile</button>
+        <button id="profile-btn" class="btn" style="background-color:#FFFCF2;border:solid #403D39" data-toggle="modal" data-target="#profileModal">Edit Profile</button>
     </div>
 </div>
 
-<ng-template #content let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Update Profile</h4>
-      <button type="button" class="close" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
+<div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="modalUsername">Username: <input [(ngModel)]="newUsername" type="text" class="form-control"></label>
+        <label for="modalPassword">Password: <input [(ngModel)]="newPassword" type="text" class="form-control"></label>
+      </div>
+      <div *ngIf="isInvalid" class="text-center" style="color: red">
+        Invalid username.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button (click)="saveChanges()" type="button" class="btn btn-primary" id="updateProfile">Save Changes</button>
+      </div>
     </div>
-    <div class="modal-body">
-      <form>
-        <div class="form-group">
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark">Save</button>
-    </div>
-  </ng-template>
-
+  </div>
+</div>

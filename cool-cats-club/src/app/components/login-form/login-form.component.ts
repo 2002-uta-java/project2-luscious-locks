@@ -30,6 +30,8 @@ export class LoginFormComponent implements OnInit {
   }
 
   authenticate(){
+    
+    console.log(this.username + ", " + this.password);
     this.apiService.getUsers().subscribe((data)=>{
       this.users = data;
       console.log(this.users);
