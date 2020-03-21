@@ -1,5 +1,6 @@
 import { ApiService } from '../../Services/api.service';
 import { Component, OnInit } from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-images',
@@ -9,6 +10,8 @@ import { Component, OnInit } from '@angular/core';
 export class ImagesComponent implements OnInit {
 
   images;
+  index;
+  rating: number[] = [1, 2, 3];
 
   constructor(private apiService: ApiService) { }
 

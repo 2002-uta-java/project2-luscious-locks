@@ -34,7 +34,7 @@ export class ProfileInfoComponent implements OnInit {
         (data) => {
           this.users = data as User[];
           for(let user of this.users) {
-            this.isInvalid = this.newUsername == user.username;
+            this.isInvalid = this.newUsername === user.username;
             if(this.isInvalid) {
               break;
             }

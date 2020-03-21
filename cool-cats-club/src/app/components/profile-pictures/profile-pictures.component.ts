@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../Services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-pictures',
@@ -14,8 +15,9 @@ export class ProfilePicturesComponent implements OnInit {
   name: string = '';
   title: string = '';
   description: string = '';
+  isInvalid: boolean = false;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -29,16 +31,28 @@ export class ProfilePicturesComponent implements OnInit {
   }
 
   public processForm() : void {
-    if(this.type === 'file') {
-      this.apiService.postImage(this.images[0], this.type).subscribe(
-        (data)=>{
-        console.log(data);
-      })
-    } else if(this.type === 'url') {
-      this.apiService.postImage(this.url, this.type).subscribe(
-        (data)=>{
-        console.log(data);
-      })
+    if(!this.images && !this.url) {
+      this.isInvalid = true;
+    } else {
+      if(this.type === 'file') {
+        this.apiService.postImage(this.images[0], this.type).subscribe(
+          (data)=>{
+            this.isInvalid = true;
+            console.log(data);
+            this.router.navigateByUrl('/images', { skipLocationChange: true }).then(() => {
+              this.router.navigate(['/profile']);
+            }); 
+        });
+      } else if(this.type === 'url') {
+        this.apiService.postImage(this.url, this.type).subscribe(
+          (data)=>{
+            this.isInvalid = true;
+            console.log(data);
+            this.router.navigateByUrl('/images', { skipLocationChange: true }).then(() => {
+              this.router.navigate(['/profile']);
+            }); 
+        });
+      }
     }
 	}
 }

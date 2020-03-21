@@ -1,8 +1,8 @@
 <div class="container">
-    <h2 class="text-center">Images ID</h2>
-    <ul *ngFor="let image of images">
+    <ul *ngFor="let image of images; index as i;">
         <li>
             <img src={{image.link}} width="120" height="120">
+            <ngb-rating [(rate)]="rating[i]"></ngb-rating>
         </li>
     </ul>
 </div>

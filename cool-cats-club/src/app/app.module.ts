@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
@@ -34,6 +35,7 @@ import { SharedService } from './Services/shared.service';
   ],
   imports: [
     BrowserModule,
+    NgbModule,
     RouterModule.forRoot([{
         path: 'home',
         component: HomepageComponent
