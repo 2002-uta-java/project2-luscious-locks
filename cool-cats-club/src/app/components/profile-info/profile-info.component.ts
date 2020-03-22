@@ -10,9 +10,9 @@ import { User } from './user';
 })
 export class ProfileInfoComponent implements OnInit {
 
-  username: string = "israel";
+  username: string;
 
-  password: string = "";
+  password: string;
 
   @Input() newUsername: string = "";
 
@@ -24,30 +24,54 @@ export class ProfileInfoComponent implements OnInit {
 
   isInvalid: boolean = false;
 
+  isEmpty: boolean = false;
+
   constructor(private apiService: ApiService, private userSession: UserSessionService ){ }
 
   ngOnInit(): void {
+    let login = atob(this.userSession.getToken()).split(':');
+    this.username = login[0];
+    this.password = login[1];
   }
 
   public saveChanges() {
     if(this.newUsername || this.newPassword) {
-      this.apiService.getUsers(this.userSession.getToken()).subscribe(
+      this.isEmpty = false;
+      this.apiService.loginUser(this.username, this.password).subscribe(
         (data) => {
-          this.users = data as User[];
-          for(let user of this.users) {
-            this.isInvalid = this.newUsername === user.username;
-            if(this.isInvalid) {
-              break;
+          let user = data as User;
+          this.apiService.putLoginOnUser(user.id, this.newUsername, this.newPassword, this.userSession.getToken()).subscribe(
+            (data) => {
+                console.log(data);
+                this.username = this.newUsername ? this.newUsername : this.username;
+                this.password = this.newPassword ? this.newPassword : this.password;
+                this.newUsername = '';
+                this.newPassword = '';
+                console.log(this.username);
+                console.log(this.password);
             }
-          }
-          if(!this.isInvalid) {
-            this.username = this.newUsername;
-            this.password = this.newPassword;
-            this.newUsername = '';
-            this.newPassword = '';
-          }
+          );
         }
       );
+      // this.apiService.getUsers(this.userSession.getToken()).subscribe(
+      //   (data) => {
+      //     this.users = data as User[];
+      //     for(let user of this.users) {
+      //       this.isInvalid = this.newUsername === user.username;
+      //       if(this.isInvalid) {
+      //         break;
+      //       }
+      //     }
+      //     if(!this.isInvalid) {
+      //       this.username = this.newUsername ? this.newUsername : this.username;
+      //       this.password = this.newPassword ? this.newPassword : this.password;
+      //       this.newUsername = '';
+      //       this.newPassword = '';
+      //     }
+      //   }
+      // );
+    } else {
+      this.isEmpty = true;
     }
   }
 }
