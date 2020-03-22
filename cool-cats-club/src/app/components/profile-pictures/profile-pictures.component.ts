@@ -37,7 +37,7 @@ export class ProfilePicturesComponent implements OnInit {
       if(this.type === 'file') {
         this.apiService.postImage(this.images[0], this.type).subscribe(
           (data)=>{
-            this.isInvalid = true;
+            this.isInvalid = false;
             console.log(data);
             this.router.navigateByUrl('/images', { skipLocationChange: true }).then(() => {
               this.router.navigate(['/profile']);
@@ -46,7 +46,7 @@ export class ProfilePicturesComponent implements OnInit {
       } else if(this.type === 'url') {
         this.apiService.postImage(this.url, this.type).subscribe(
           (data)=>{
-            this.isInvalid = true;
+            this.isInvalid = false;
             console.log(data);
             this.router.navigateByUrl('/images', { skipLocationChange: true }).then(() => {
               this.router.navigate(['/profile']);
