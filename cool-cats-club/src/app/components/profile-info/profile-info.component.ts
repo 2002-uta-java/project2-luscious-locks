@@ -1,6 +1,6 @@
-import { UserSessionService } from './../../Services/user-session.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { ApiService } from '../../Services/api.service';
+import { UserSessionService } from './../../Services/user-session.service';
 import { User } from './user';
 
 @Component({
@@ -24,7 +24,7 @@ export class ProfileInfoComponent implements OnInit {
 
   isInvalid: boolean = false;
 
-  constructor(private apiService: ApiService, private userSession: UserSessionService) { }
+  constructor(private apiService: ApiService, private userSession: UserSessionService ){ }
 
   ngOnInit(): void {
   }
