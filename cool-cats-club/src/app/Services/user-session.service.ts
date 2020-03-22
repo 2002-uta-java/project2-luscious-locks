@@ -16,6 +16,7 @@ export class UserSessionService {
   }
 
   clearToken(){
+    window.localStorage.removeItem('token');
     window.localStorage.clear();
   }
 }

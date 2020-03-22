@@ -28,22 +28,34 @@ export class SignupFormComponent implements OnInit {
   }
 
   authenticate(){
-    // this.apiService.getUsers().subscribe((data)=>{
-    //   this.users = data;
-    //   for(let user of this.users){
-    //     if(user.username === this.username){
-    //       this.taken = true;
-    //       console.log("Username is taken");
-    //     }
-    //   }
-    //   if(!this.taken){
-    //     //post request to persist user
-    //     //Store user token to maintain session
-    //     this.userSession.setToken(`${this.username}:${this.password}`);
-    //     this.sharedService.isSignedInData.emit(true);
-    //     this.router.navigate(['/home']);
-    //   }
-    // })
+    this.apiService.getUsers('YnJpYW46d2hhdGV2').subscribe((data)=>{
+      this.users = data;
+      for(let user of this.users){
+        if(user.username === this.username){
+          this.taken = true;
+          console.log("Username is taken");
+        }
+        if(!this.taken){
+          this.signup();
+        }
+      }
+    })
+  }
+
+  signup(){
+    //post request to persist user
+    this.apiService.signUpUser(this.username, this.password).subscribe(
+      (data)=>{
+        console.log(data);
+      },
+      error=>{
+        console.log("Couldn't create user");
+      }
+    );
+    //Store user token to maintain session
+    this.userSession.setToken(`${this.username}:${this.password}`);
+    this.sharedService.isSignedInData.emit(true);
+    this.router.navigate(['/home']);
   }
 
 }
