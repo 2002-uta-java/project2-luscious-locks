@@ -8,7 +8,7 @@ export class UserSessionService {
   constructor() {}
 
   setToken(token:string){
-    window.localStorage.setItem('token', `${token}`);
+    window.localStorage.setItem('token', `${btoa(token)}`);
   }
 
   getToken():string{
@@ -16,6 +16,7 @@ export class UserSessionService {
   }
 
   clearToken(){
+    window.localStorage.removeItem('token');
     window.localStorage.clear();
   }
 }

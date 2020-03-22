@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ApiService } from '../../Services/api.service';
+import { UserSessionService } from './../../Services/user-session.service';
 import { User } from './user';
 
 @Component({
@@ -23,14 +24,14 @@ export class ProfileInfoComponent implements OnInit {
 
   isInvalid: boolean = false;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private userSession: UserSessionService ){ }
 
   ngOnInit(): void {
   }
 
   public saveChanges() {
     if(this.newUsername || this.newPassword) {
-      this.apiService.getUsers().subscribe(
+      this.apiService.getUsers(this.userSession.getToken()).subscribe(
         (data) => {
           this.users = data as User[];
           for(let user of this.users) {
