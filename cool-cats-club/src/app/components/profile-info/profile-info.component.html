@@ -27,6 +27,9 @@
       <div *ngIf="isInvalid" class="text-center" style="color: red">
         Invalid username.
       </div>
+      <div *ngIf="isEmpty" class="text-center" style="color: red">
+        No changes detected.
+      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button (click)="saveChanges()" type="button" class="btn btn-primary" id="updateProfile">Save Changes</button>

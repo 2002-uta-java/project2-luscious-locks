@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../Services/api.service';
+import { UserSessionService } from './../../Services/user-session.service';
 import { Router } from '@angular/router';
+import { Image } from './image';
+import { Data } from './data';
 
 @Component({
   selector: 'app-profile-pictures',
@@ -17,7 +20,7 @@ export class ProfilePicturesComponent implements OnInit {
   description: string = '';
   isInvalid: boolean = false;
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private userSession: UserSessionService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -29,6 +32,10 @@ export class ProfilePicturesComponent implements OnInit {
   onFileChange(event) {
     this.images = event.target.files;
   }
+  
+  public selected(event){
+    this.type = event.target.value;
+  }
 
   public processForm() : void {
     if(!this.images && !this.url) {
@@ -39,20 +46,22 @@ export class ProfilePicturesComponent implements OnInit {
           (data)=>{
             this.isInvalid = false;
             console.log(data);
-            this.router.navigateByUrl('/images', { skipLocationChange: true }).then(() => {
-              this.router.navigate(['/profile']);
-            }); 
+            let d  = data as Data;
+            let img = d.data;
+            this.apiService.postImageDB(img.link, img.description, this.userSession.getToken());
+            window.location.reload();
         });
       } else if(this.type === 'url') {
         this.apiService.postImage(this.url, this.type).subscribe(
           (data)=>{
             this.isInvalid = false;
             console.log(data);
-            this.router.navigateByUrl('/images', { skipLocationChange: true }).then(() => {
-              this.router.navigate(['/profile']);
-            }); 
+            let d  = data as Data;
+            let img = d.data;
+            this.apiService.postImageDB(img.link, img.description, this.userSession.getToken());
+            window.location.reload();
         });
       }
     }
-	}
+  }
 }

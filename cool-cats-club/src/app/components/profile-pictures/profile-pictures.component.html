@@ -1,32 +1,42 @@
 <form (submit)="processForm()">
-    <div class="field">
-        <label>Name: <input type="text" name="name" [(ngModel)]="title" /></label>
+    <!-- <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Name: </label>
+        <div class="col-sm-8">
+            <input style="height: 100%; width: 100%;" type="text" name="name" [(ngModel)]="name" />
+        </div>
     </div>
-    <div class="field">
-        <label>Title: <input type="text" name="title" [(ngModel)]="title" /></label>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Title: </label>
+        <div class="col-sm-8">
+            <input style="height: 100%; width: 100%;" type="text" name="title" [(ngModel)]="title" />
+        </div>
+    </div> -->
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Description: </label>
+        <div class="col-sm-8">
+            <input style="height: 100%; width: 100%;" type="text" name="description" [(ngModel)]="description" />
+        </div>
     </div>
-    <div class="field">
-        <label>Description: <input type="text" name="description" [(ngModel)]="description" /></label>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Image: </label>
+        <div class="col-sm-8">
+            <select (change)="selected($event)" style="height: 100%; width: 20%;">
+                <option value='file' selected>File</option>
+                <option value='url'>URL</option>
+            </select>
+            <span *ngIf="type==='file'">
+                <input (change)="onFileChange($event)" style="height: 100%; width: 80%;" type="file"/>
+            </span>
+            <span *ngIf="type==='url'">
+                <input [(ngModel)]="url" style="height: 100%; width: 80%;" type="text" name="url"/>
+            </span>
+        </div>
     </div>
-    <span class="field">
-        <span class="radio">
-            <label><input (change)="onRadioChange($event)" type="radio" name="imgInput" value='file' checked>File </label>
-        </span>
-        <span class="radio">
-            <label><input (change)="onRadioChange($event)" type="radio" name="imgInput" value='url'>URL </label>
-        </span>
-        <span *ngIf="type==='file'">
-            <input (change)="onFileChange($event)" type="file"/>
-        </span>
-        <span *ngIf="type==='url'">
-            <label>Image: <input type="text" name="url" [(ngModel)]="url" /></label>
-        </span>
-        <span *ngIf="isInvalid" style="color: red">
-            Image File/URL Required
-        </span>
-    </span>
-    <div class="actions">
-        <button class="btn" style="background-color:#FFFCF2;border:solid #403D39" type="submit">
+    <div class="text-center" *ngIf="isInvalid" style="color: red">
+        Image File/URL Required
+    </div>
+    <div class="actions text-center">
+        <button class="btn btn-lg" style="background-color:#FFFCF2;border:solid #403D39" type="submit">
             Upload
         </button>
     </div>

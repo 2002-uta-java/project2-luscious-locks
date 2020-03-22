@@ -1,0 +1,33 @@
+export interface Image{
+    description?: string;
+    link?: string;
+    // title: string;
+    // description: string;
+    // datetime: string;
+    // type: string;
+    // animated: boolean;
+    // width: number;
+    // height: number;
+    // size: number;
+    // views: number;
+    // bandwidth: number;
+    // vote: number;
+    // favorite: boolean;
+    // nsfw: boolean;
+    // section;
+    // account_url;
+    // account_id: number;
+    // is_ad: boolean;
+    // in_most_viral: boolean;
+    // has_sound: boolean;
+    // tags: any[];
+    // length: number;
+    // __proto__: any[];
+    // ad_type: number;
+    // ad_url: string;
+    // edited: string;
+    // in_gallery: boolean;
+    // deletehash: string;
+    // name: string;
+    // link: string;
+}
