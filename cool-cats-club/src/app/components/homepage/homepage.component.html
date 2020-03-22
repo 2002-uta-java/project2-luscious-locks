@@ -1,3 +1,18 @@
 <div class="container">
-    <app-images></app-images>
+    <h2 class="text-center">Welcome {{user.username}}</h2>
+    <div class="container col-8" style="background-color: black;">
+        <div class="card" *ngFor='let image of images'>
+            <img class="card-img-top" src={{image.url}}>
+            <div class="card-body">
+                <p class="card-text">{{image.description}}<br>posted by: {{image.poster.username}}<br>
+                    <button 
+                        class="btn btn-outline-primary btn-sm btn-block" 
+                        (click)='openModalById(image.id)'>
+                            details
+                    </button>
+                </p>
+            </div>
+            <br>
+        </div>
+    </div>
 </div>
