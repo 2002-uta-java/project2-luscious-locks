@@ -1,5 +1,7 @@
+import { UserSessionService } from './../../Services/user-session.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { SharedService } from '../../Services/shared.service';
 
 @Component({
   selector: 'app-navigation',
@@ -8,13 +10,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  isSignedIn:boolean = true;
+  isSignedIn:boolean = false;
 
-  homeClass:string = "nav-link";
+  homeClass:string = "nav-link active";
 
   profileclass:string = "nav-link";
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, private sharedService: SharedService, private userSession :UserSessionService) {
+    this.sharedService.isSignedInData.subscribe(
+      (data: boolean) => {
+        this.isSignedIn = data;
+      }
+    );
+    this.sharedService.homeClassData.subscribe(
+      (data: string) => {
+        this.homeClass = data;
+      }
+    );
+    this.sharedService.profileClassData.subscribe(
+      (data: string) => {
+        this.profileclass = data;
+      }
+    );
+  }
 
   ngOnInit(): void {
   }
@@ -32,7 +50,10 @@ export class NavigationComponent implements OnInit {
   }
 
   signOut(){
+    this.homeClass = "nav-link active";
+    this.profileclass = "nav-link";
     this.router.navigate(['/signin']);
+    this.userSession.clearToken();
     this.setSignIn(false);
   }
 
