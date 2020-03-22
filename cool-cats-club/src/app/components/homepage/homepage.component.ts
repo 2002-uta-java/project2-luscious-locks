@@ -1,3 +1,4 @@
+import { Image } from './image';
 import { ApiService } from './../../Services/api.service';
 import { Router } from '@angular/router';
 import { UserSessionService } from './../../Services/user-session.service';
@@ -17,11 +18,17 @@ export class HomepageComponent implements OnInit {
 
   user;
 
-  images;
+  images:Image[];
 
   token:string;
 
-  template;
+  //Image fields to populate modal
+  currentImages:Image[];
+  currentImage:Image;
+  imageRating;
+  currentRating;
+  imageComments;
+  currentComment;
 
   ngOnInit(): void {
     if(this.userSession.getToken()){
@@ -51,13 +58,32 @@ export class HomepageComponent implements OnInit {
     this.apiService.getUserImages(this.token).subscribe(
       (data)=>{
         console.log(data);
-        this.images = data;
+        this.images = data as Image[];
       }
     )
   }
 
   openModalById(content, id:number){
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+    //get image info and save it locally for modal
+    this.apiService.getUserImages(this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data);
+        this.currentImages = data as Image[];
+        this.currentImages.forEach(image=>{
+          if(image.id == id){
+            this.currentImage = image;
+          }
+        })
+      }
+    )
+    
+    //get comments by image id and save them locally for modal
+
+    //get ratings by image id and save them locally for modal
+
+    //open template modal
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',
+    backdropClass: 'light-grey-backdrop', scrollable: true});
   }
 
 }
