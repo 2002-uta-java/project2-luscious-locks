@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light sticky-top"  style="background-color: blueviolet;">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top"  style="background-color: rgb(192, 131, 250);">
     <span class="navbar-brand">
         <img src="../../../assets/cool-cats-club-big.ico" width="30" height="30" alt="logo">
         Cool Cats Club
@@ -17,10 +17,10 @@
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
+            <li class="nav-item" style="cursor: pointer">
                 <a *ngIf='isSignedIn' [class]="homeClass" (click)="goHome()">Home</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" style="cursor: pointer">
                 <a *ngIf='isSignedIn' [class]="profileclass" (click)="showProfile()">Profile</a>
             </li>
         </ul>
