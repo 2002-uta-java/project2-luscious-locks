@@ -150,13 +150,13 @@ export class ApiService {
   }
   
   // need image parameter, others are optional; returns 200 on success :)
-  public postImage(image, type='file', name='', title='', description=''){
+  public postImage(image, type='file', description='',  name='', title='', ){
     const formData = new FormData();
     formData.append('image', image);
     formData.append('type', type);
+    formData.append('description', description);
     formData.append('name', name);
     formData.append('title', title);
-    formData.append('description', description);
     return this.httpClient.post(this.apiImageUrl, formData, { headers: new HttpHeaders().set('Authorization', `Bearer ${this.accessToken}`)});
   }
 

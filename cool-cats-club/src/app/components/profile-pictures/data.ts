@@ -1,5 +1,5 @@
-import { Image } from './image';
+import { Imgur } from './imgur';
 
 export interface Data {
-    data ?: Image;
+    data ?: Imgur;
 }

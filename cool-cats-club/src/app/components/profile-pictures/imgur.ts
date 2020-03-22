@@ -1,4 +1,4 @@
-export interface Image{
+export interface Imgur{
     description?: string;
     link?: string;
     // title: string;
