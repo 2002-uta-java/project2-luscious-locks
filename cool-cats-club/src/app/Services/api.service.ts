@@ -121,6 +121,12 @@ export class ApiService {
       return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
     }    
 
+    public putLoginOnUser(id: number, username: string, password: string, auth: string) {
+      let data = {'username': username, 'password': password};
+      const headers = new HttpHeaders ({'Content-Type': 'application/json'});
+      return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+    }
+
   /*~~~~~URLs, Access Token, Client ID, and method to interact with imgur API~~~~~*/
 
   apiPostUrl: string = 'https://api.imgur.com/3/upload';

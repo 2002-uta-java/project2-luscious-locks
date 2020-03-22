@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { UserSessionService } from './../../Services/user-session.service';
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../Services/shared.service';
 
@@ -8,12 +10,17 @@ import { SharedService } from '../../Services/shared.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private sharedService: SharedService) { }
+  constructor(private sharedService: SharedService, private userSession: UserSessionService, private router: Router) { }
 
   ngOnInit(): void {
-    this.sharedService.isSignedInData.emit(true);
-    this.sharedService.homeClassData.emit("nav-link");
-    this.sharedService.profileClassData.emit("nav-link active");
+    if(this.userSession.getToken()){ 
+      this.sharedService.isSignedInData.emit(true);
+      this.sharedService.homeClassData.emit("nav-link");
+      this.sharedService.profileClassData.emit("nav-link active");
+    }
+    else{
+      this.router.navigate(['/signin']);
+    }
   }
 
 }

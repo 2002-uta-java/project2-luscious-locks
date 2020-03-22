@@ -24,8 +24,8 @@ export class LoginFormComponent implements OnInit {
   ngOnInit(): void {
     this.sharedService.isSignedInData.emit(false);
     if(this.userSession.getToken()){
-      this.router.navigate(['/home']);
       this.sharedService.isSignedInData.emit(true);
+      this.router.navigate(['/home']);
     }
   }
 
