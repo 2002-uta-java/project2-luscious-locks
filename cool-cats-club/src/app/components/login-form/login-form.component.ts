@@ -11,7 +11,7 @@ import { SharedService } from '../../Services/shared.service';
 })
 export class LoginFormComponent implements OnInit {
 
-  users:any;
+  user:any;
 
   username:string = "";
 
@@ -30,23 +30,22 @@ export class LoginFormComponent implements OnInit {
   }
 
   authenticate(){
-    this.apiService.getUsers().subscribe((data)=>{
-      this.users = data;
-      console.log(this.users);
-      console.log(this.username + ", " + this.password);
-      for(let user of this.users){
-        console.log(user);
-        if(user.username === this.username /*&& user.password === this.password*/){
-          this.router.navigate(['/home']);
-          this.found = true;
-          this.sharedService.isSignedInData.emit(this.found);
-          this.userSession.setToken(`${this.username}:${this.password}`);
-          console.log("token: " + this.userSession.getToken());
-        }
+    this.apiService.loginUser(this.username, this.password).subscribe(
+      (data)=>{
+        this.user = data;
+        console.log(this.user);
+        console.log(this.username + ", " + this.password);
+        this.router.navigate(['/home']);
+        this.found = true;
+        this.sharedService.isSignedInData.emit(this.found);
+        this.userSession.setToken(`${this.username}:${this.password}`);
+        console.log("token: " + this.userSession.getToken());
+      },
+      error=>{
+        console.log(error.status);
+        console.log("Invalid username or password");
       }
-      if(!this.found)
-        console.log("Invalid username or password!");
-    })
+    )
   }
 
 }

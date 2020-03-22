@@ -17,6 +17,10 @@ import { ProfileInfoComponent } from './components/profile-info/profile-info.com
 import { ProfilePicturesComponent } from './components/profile-pictures/profile-pictures.component';
 
 import { SharedService } from './Services/shared.service';
+import { ModeratorHomeComponent } from './components/moderator-home/moderator-home.component';
+import { ModeratorUsersComponent } from './components/moderator-users/moderator-users.component';
+import { ModeratorCommentsComponent } from './components/moderator-comments/moderator-comments.component';
+import { ModeratorImagesComponent } from './components/moderator-images/moderator-images.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,11 @@ import { SharedService } from './Services/shared.service';
     DashboardComponent,
     ProfileComponent,
     ProfileInfoComponent,
-    ProfilePicturesComponent
+    ProfilePicturesComponent,
+    ModeratorHomeComponent,
+    ModeratorUsersComponent,
+    ModeratorCommentsComponent,
+    ModeratorImagesComponent
   ],
   imports: [
     BrowserModule,
