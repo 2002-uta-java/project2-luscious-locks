@@ -19,23 +19,24 @@
 
 <ng-template #content let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <h4 class="modal-title" id="modal-basic-title">{{currentImage.description}}</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <form>
-        <div class="form-group">
-          <label for="dateOfBirth">Date of birth</label>
-          <div class="input-group">
-            <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
-            </div>
-          </div>
+      <div class="card">
+        <img class="card-img-top" src={{currentImage.url}}>
+        <div class="card-body">
+            <p class="card-text">{{currentImage.description}}<br>posted by: {{currentImage.poster.username}}<br>
+              Rating: ******<br>
+              user rating if any<br>
+              <input class="form-control" type="text" placeholder="leave a comment" [value]='currentComment'><br>
+              All other comments here!
+            </p>
         </div>
-      </form>
+        <br>
+      </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
