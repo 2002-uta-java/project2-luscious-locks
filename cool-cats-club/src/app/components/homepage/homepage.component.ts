@@ -1,7 +1,9 @@
+import { ApiService } from './../../Services/api.service';
 import { Router } from '@angular/router';
 import { UserSessionService } from './../../Services/user-session.service';
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../Services/shared.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-homepage',
@@ -10,17 +12,52 @@ import { SharedService } from '../../Services/shared.service';
 })
 export class HomepageComponent implements OnInit {
 
-  constructor(private sharedService: SharedService, private userSession: UserSessionService, private router: Router) { }
+  constructor(private sharedService: SharedService, private userSession: UserSessionService, 
+    private router: Router, private apiService: ApiService, private modalService: NgbModal) { }
+
+  user;
+
+  images;
+
+  token:string;
+
+  template;
 
   ngOnInit(): void {
     if(this.userSession.getToken()){
       this.sharedService.isSignedInData.emit(true);
       this.sharedService.homeClassData.emit("nav-link active");
       this.sharedService.profileClassData.emit("nav-link");
+      this.token = this.userSession.getToken();
+      this.populateUser();
+      this.populateImages();
     }
     else{
       this.router.navigate(['/signin']);
     }
+  }
+
+  populateUser(){
+    console.log(this.token);
+    console.log(atob(this.token).split(':')[0]);
+    this.apiService.loginUser(atob(this.token).split(':')[0],atob(this.token).split(':')[1]).subscribe(
+      (data)=>{
+      console.log(data);
+      this.user = data;
+    })
+  }
+
+  populateImages(){
+    this.apiService.getUserImages(this.token).subscribe(
+      (data)=>{
+        console.log(data);
+        this.images = data;
+      }
+    )
+  }
+
+  openModalById(content, id:number){
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
 
 }
