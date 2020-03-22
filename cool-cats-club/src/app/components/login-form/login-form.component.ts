@@ -35,11 +35,11 @@ export class LoginFormComponent implements OnInit {
         this.user = data;
         console.log(this.user);
         console.log(this.username + ", " + this.password);
-        this.router.navigate(['/home']);
         this.found = true;
         this.sharedService.isSignedInData.emit(this.found);
         this.userSession.setToken(`${this.username}:${this.password}`);
         console.log("token: " + this.userSession.getToken());
+        this.router.navigate(['/home']);
       },
       error=>{
         console.log(error.status);
