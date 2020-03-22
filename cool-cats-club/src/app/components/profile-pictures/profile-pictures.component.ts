@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../Services/api.service';
 import { UserSessionService } from './../../Services/user-session.service';
 import { Router } from '@angular/router';
-import { Image } from './image';
 import { Data } from './data';
 
 @Component({
@@ -42,23 +41,31 @@ export class ProfilePicturesComponent implements OnInit {
       this.isInvalid = true;
     } else {
       if(this.type === 'file') {
-        this.apiService.postImage(this.images[0], this.type).subscribe(
+        this.apiService.postImage(this.images[0], this.type, this.description).subscribe(
           (data)=>{
             this.isInvalid = false;
             console.log(data);
             let d  = data as Data;
             let img = d.data;
-            this.apiService.postImageDB(img.link, img.description, this.userSession.getToken());
+            this.apiService.postImageDB(img.link, img.description, this.userSession.getToken()).subscribe(
+              (data) => {
+                console.log(data);
+              }
+            );
             window.location.reload();
         });
       } else if(this.type === 'url') {
-        this.apiService.postImage(this.url, this.type).subscribe(
+        this.apiService.postImage(this.url, this.type, this.description).subscribe(
           (data)=>{
             this.isInvalid = false;
             console.log(data);
             let d  = data as Data;
             let img = d.data;
-            this.apiService.postImageDB(img.link, img.description, this.userSession.getToken());
+            this.apiService.postImageDB(img.link, img.description, this.userSession.getToken()).subscribe(
+              (data) => {
+                console.log(data);
+              }
+            );
             window.location.reload();
         });
       }

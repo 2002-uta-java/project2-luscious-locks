@@ -1,16 +1,36 @@
-<div class="container">
-    <ul *ngFor="let image of images; index as i;">
-        <li>
-            <span>
-                <img style="cursor: pointer" src={{image.link}} width="120" height="120" data-toggle="modal" data-target="#imgModal">
-                <label>Comments: <p>User comments</p></label>
-            </span>
-        </li>
-        <ngb-rating [(rate)]="rating[i]" [readonly]="isMine"></ngb-rating>
-    </ul>
+<div class="container d-flex flex-row flex-wrap">
+    <div class="p-2" *ngFor="let image of images">
+        <img (click)='openModalById(content, image.id)' class="img-thumbnail" style="cursor: pointer" src={{image.url}} data-toggle="modal" data-target="#imgModal">
+    </div>
 </div>
 
-<div class="modal fade" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="imgModalLabel" aria-hidden="true">
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{currentImage.description}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <img class="card-img-top" src={{currentImage.url}}>
+        <div class="card-body">
+            <p class="card-text">{{currentImage.description}}<br>posted by: {{currentImage.poster.username}}<br>
+              Rating: ******<br>
+              user rating if any<br>
+              <input class="form-control" type="text" placeholder="leave a comment" [value]='currentComment'><br>
+              All other comments here!
+            </p>
+        </div>
+        <br>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+<!-- <div class="modal fade" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="imgModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -29,4 +49,4 @@
             </div>
       </div>
     </div>
-  </div>
+  </div> -->
