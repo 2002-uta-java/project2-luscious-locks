@@ -8,7 +8,7 @@ export class UserSessionService {
   constructor() {}
 
   setToken(token:string){
-    window.localStorage.setItem('token', `${token}`);
+    window.localStorage.setItem('token', `${btoa(token)}`);
   }
 
   getToken():string{
