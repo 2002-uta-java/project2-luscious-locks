@@ -66,6 +66,11 @@ export class ApiService {
       return this.httpClient.get(this.baseUrl+`/images`,{headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
     }
 
+    //Method to get all images by all users
+    public getUserImagesByFlag(flagged:boolean, auth:string){
+      return this.httpClient.get(this.baseUrl+`/images`,{headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
+    }
+
     //Method to get rating by id
     public getRatingByID(id:number, auth:string){
       return this.httpClient.get(this.baseUrl+`/ratings/${id}`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});

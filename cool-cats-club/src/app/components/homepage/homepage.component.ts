@@ -32,6 +32,8 @@ export class HomepageComponent implements OnInit {
   currentRating:Rating;
   imageComments:Comment[];
   currentComment:string = "";
+  averageRating:number;
+  myRating:number;
 
   ngOnInit(): void {
     if(this.userSession.getToken()){
@@ -71,51 +73,57 @@ export class HomepageComponent implements OnInit {
   }
 
   openModalById(content, id:number){
-    //open template modal
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',
-    backdropClass: 'light-grey-backdrop', scrollable: true});
     //get image info and save it locally for modal
     this.apiService.getUserImages(this.userSession.getToken()).subscribe(
       (data)=>{
         console.log(data);
         this.currentImages = data as Image[];
         this.currentImages.forEach(image=>{
-          if(image.id == id){
+          if(image.id == id) {
             this.currentImage = image;
+
+            //get comments by image id and save them locally for modal
+            this.apiService.getCommentsOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
+              (data)=>{
+                console.log(data);
+                this.imageComments = data as Comment[];
+                console.log(this.imageComments);
+                this.imageComments.forEach(comment=>{
+                  console.log(comment);
+                })
+              }
+            );
+
+            //get ratings by image id and save them locally for modal
+            this.apiService.getRatingOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
+              (data)=>{
+                console.log(data);
+                this.imageRatings = data as Rating[];
+                console.log(this.imageRatings);
+                this.imageRatings.forEach(rating=>{
+                  console.log(rating);
+                });
+                
+                //if user has rated image then set current rating to the correct rating
+                this.imageRatings.forEach(rating=>{
+                  if(rating.rater.id === this.user.id){
+                    this.currentRating = rating;
+                  }
+                });
+                
+                this.averageRating = this.getAverageRatings();
+                this.myRating = this.currentRating.rating;
+              }
+            );
+            //open template modal
+            this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',
+            backdropClass: 'light-grey-backdrop', scrollable: true});
           }
         })
       }
     )
-    //get comments by image id and save them locally for modal
-    this.apiService.getCommentsOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
-      (data)=>{
-        console.log(data);
-        this.imageComments = data as Comment[];
-        console.log(this.imageComments);
-        this.imageComments.forEach(comment=>{
-          console.log(comment);
-        })
-      }
-    )
-    //get ratings by image id and save them locally for modal
-    this.apiService.getRatingOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
-      (data)=>{
-        console.log(data);
-        this.imageRatings = data as Rating[];
-        console.log(this.imageRatings);
-        this.imageRatings.forEach(rating=>{
-          console.log(rating);
-        })
-      }
-    )
-    //if user has rated image then set current rating to the correct rating
-    this.imageRatings.forEach(rating=>{
-      if(rating.rater.id === this.user.id){
-        this.currentRating = rating;
-      }
-    })
   }
-
+      
   postInfo(){
     let tempComment;
     console.log(this.currentComment);
@@ -134,6 +142,13 @@ export class HomepageComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
+    this.apiService.postRatingOnImage(this.user.id, this.myRating.toString(), this.token).subscribe(
+      (data) => {
+        console.log(data);
+      }
+    );
+  }
+      
   getAverageRatings(){
     let avg:number = 0;
     this.imageRatings.forEach(rating=>{
@@ -173,5 +188,4 @@ export class HomepageComponent implements OnInit {
       }
     );
   }
-
 }
