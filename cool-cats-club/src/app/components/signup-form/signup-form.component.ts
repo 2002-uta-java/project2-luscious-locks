@@ -23,7 +23,15 @@ export class SignupFormComponent implements OnInit {
   ngOnInit(): void {
     if(this.userSession.getToken()){
       this.sharedService.isSignedInData.emit(true);
-      this.router.navigate(['/home']);
+      this.sharedService.isModeratorData.subscribe(
+        (data) => {
+          if(data) {
+            this.router.navigate(['/moderator-home']);
+          } else {
+            this.router.navigate(['/home']);
+          }
+        }
+      );
     }
   }
 

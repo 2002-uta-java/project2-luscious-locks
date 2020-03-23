@@ -34,12 +34,20 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.userSession.getToken()){
-      this.sharedService.isSignedInData.emit(true);
-      this.sharedService.homeClassData.emit("nav-link active");
-      this.sharedService.profileClassData.emit("nav-link");
-      this.token = this.userSession.getToken();
-      this.populateUser();
-      this.populateImages();
+      this.sharedService.isModeratorData.subscribe(
+        (data) => {
+          if(data) {
+            this.router.navigate(['/moderator-home']);
+          } else {
+            this.sharedService.isSignedInData.emit(true);
+            this.sharedService.homeClassData.emit("nav-link active");
+            this.sharedService.profileClassData.emit("nav-link");
+            this.token = this.userSession.getToken();
+            this.populateUser();
+            this.populateImages();
+          }
+        }
+      );
     }
     else{
       this.router.navigate(['/signin']);

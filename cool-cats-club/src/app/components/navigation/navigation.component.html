@@ -20,8 +20,16 @@
             <li class="nav-item" style="cursor: pointer">
                 <a *ngIf='isSignedIn' [class]="homeClass" (click)="goHome()">Home</a>
             </li>
-            <li class="nav-item" style="cursor: pointer">
+
+            <li *ngIf='!isModerator' class="nav-item" style="cursor: pointer">
                 <a *ngIf='isSignedIn' [class]="profileclass" (click)="showProfile()">Profile</a>
+            </li>
+
+            <li *ngIf='isModerator' class="nav-item" style="cursor: pointer">
+                <a *ngIf='isSignedIn' [class]="profileclass" (click)="showUsers()">Users</a>
+            </li>
+            <li *ngIf='isModerator' class="nav-item" style="cursor: pointer">
+                <a *ngIf='isSignedIn' [class]="profileclass" (click)="showComments()">Comments</a>
             </li>
         </ul>
         <button *ngIf='isSignedIn' class="nav-link" (click)="signOut()">sign out</button>

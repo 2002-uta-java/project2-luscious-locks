@@ -12,14 +12,39 @@ export class NavigationComponent implements OnInit {
 
   isSignedIn:boolean = false;
 
-  homeClass:string = "nav-link active";
+  isModerator: boolean = false;
 
+  homeClass:string = "nav-link active";
   profileclass:string = "nav-link";
+
+  moderatorHomeClass: string = "nav-link active";
+  moderatorUsersClass: string = "nav-link";
+  moderatorCommentsClass: string = "nav-link";
 
   constructor(public router: Router, private sharedService: SharedService, private userSession :UserSessionService) {
     this.sharedService.isSignedInData.subscribe(
       (data: boolean) => {
         this.isSignedIn = data;
+      }
+    );
+    this.sharedService.isModeratorData.subscribe(
+      (data: boolean) => {
+        this.isModerator = data;
+      }
+    );
+    this.sharedService.moderatorHomeClassData.subscribe(
+      (data: string) => {
+        this.moderatorHomeClass = data;
+      }
+    );
+    this.sharedService.moderatorUsersClassData.subscribe(
+      (data: string) => {
+        this.moderatorUsersClass = data;
+      }
+    );
+    this.sharedService.moderatorCommentsClassData.subscribe(
+      (data: string) => {
+        this.moderatorCommentsClass = data;
       }
     );
     this.sharedService.homeClassData.subscribe(
@@ -38,9 +63,16 @@ export class NavigationComponent implements OnInit {
   }
 
   goHome(){
-    this.homeClass = "nav-link active";
-    this.profileclass = "nav-link";
-    this.router.navigate(['/home']);
+    if(!this.isModerator) {
+      this.homeClass = "nav-link active";
+      this.profileclass = "nav-link";
+      this.router.navigate(['/home']);
+    } else {
+      this.moderatorHomeClass = "nav-link active";
+      this.moderatorUsersClass = "nav-link";
+      this.moderatorCommentsClass = "nav-link";
+      this.router.navigate(['/moderator-home']);
+    }
   }
 
   showProfile(){
@@ -49,16 +81,35 @@ export class NavigationComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
 
+  showUsers() {
+    this.moderatorHomeClass = "nav-link";
+    this.moderatorUsersClass = "nav-link active";
+    this.moderatorCommentsClass = "nav-link";
+    this.router.navigate(['/moderator-users']);
+   }
+
+  showComments() {
+    this.moderatorHomeClass = "nav-link";
+    this.moderatorUsersClass = "nav-link";
+    this.moderatorCommentsClass = "nav-link active";
+    this.router.navigate(['/moderator-comments']);
+  }
+
   signOut(){
     this.homeClass = "nav-link active";
     this.profileclass = "nav-link";
+
+    this.moderatorHomeClass = "nav-link active";
+    this.moderatorUsersClass = "nav-link";
+    this.moderatorCommentsClass = "nav-link";
+
     this.router.navigate(['/signin']);
     this.userSession.clearToken();
     this.setSignIn(false);
   }
 
   setSignIn(isSignedIn: boolean){
-      this.isSignedIn = isSignedIn;
+    this.isSignedIn = isSignedIn;
   }
 
 }
