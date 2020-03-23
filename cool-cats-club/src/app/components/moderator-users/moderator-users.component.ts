@@ -25,9 +25,15 @@ export class ModeratorUsersComponent implements OnInit {
   ngOnInit(): void {
     if(this.userSession.getToken()){
       this.sharedService.isSignedInData.emit(true);
-      this.sharedService.homeClassData.emit("nav-link active");
-      this.sharedService.profileClassData.emit("nav-link");
-      this.getUsers();
+      if(this.userSession.getModerator) {
+        this.sharedService.isModeratorData.emit(true);
+        this.sharedService.moderatorHomeClassData.emit("nav-link");
+        this.sharedService.moderatorUsersClassData.emit("nav-link active");
+        this.sharedService.moderatorCommentsClassData.emit("nav-link");
+         this.getUsers();
+      } else {
+        this.router.navigate(['/home']);
+      }
     }
     else{
       this.router.navigate(['/signin']);
@@ -94,5 +100,4 @@ export class ModeratorUsersComponent implements OnInit {
   setToMute(mute:boolean){
     this.mute = mute;
   }
-
 }

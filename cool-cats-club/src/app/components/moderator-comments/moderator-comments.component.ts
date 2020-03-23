@@ -2,8 +2,8 @@ import { Image } from './../homepage/image';
 import { User } from './../profile-info/user';
 import { Comment } from './../homepage/comment';
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from 'src/app/Services/shared.service';
-import { UserSessionService } from 'src/app/Services/user-session.service';
+import { UserSessionService } from './../../Services/user-session.service';
+import { SharedService } from '../../Services/shared.service';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/Services/api.service';
 
@@ -22,9 +22,15 @@ export class ModeratorCommentsComponent implements OnInit {
   ngOnInit(): void {
     if(this.userSession.getToken()){
       this.sharedService.isSignedInData.emit(true);
-      this.sharedService.homeClassData.emit("nav-link active");
-      this.sharedService.profileClassData.emit("nav-link");
-      this.getComments();
+      if(this.userSession.getModerator) {
+        this.sharedService.isModeratorData.emit(true);
+        this.sharedService.moderatorHomeClassData.emit("nav-link");
+        this.sharedService.moderatorUsersClassData.emit("nav-link");
+        this.sharedService.moderatorCommentsClassData.emit("nav-link active");
+        this.getComments();
+      } else {
+        this.router.navigate(['/home']);
+      }
     }
     else{
       this.router.navigate(['/signin']);
@@ -64,5 +70,4 @@ export class ModeratorCommentsComponent implements OnInit {
     this.comments = [];
     this.getComments();
   }
-
 }
