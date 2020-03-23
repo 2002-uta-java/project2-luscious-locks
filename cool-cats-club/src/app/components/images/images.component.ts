@@ -132,8 +132,7 @@ export class ImagesComponent implements OnInit {
     );
 
     //open template modal
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',
-    backdropClass: 'light-grey-backdrop', scrollable: true});  
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', scrollable: true});  
   }
   
   postInfo(){
