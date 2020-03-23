@@ -15,16 +15,12 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     if(this.userSession.getToken()){ 
       this.sharedService.isSignedInData.emit(true);
-      this.sharedService.isModeratorData.subscribe(
-        (data) => {
-          if(data) {
-            this.router.navigate(['/moderator-home']);
-          } else {
-            this.sharedService.homeClassData.emit("nav-link");
-            this.sharedService.profileClassData.emit("nav-link active");
-          }
-        }
-      );
+      if(this.userSession.getModerator()) {
+        this.router.navigate(['/moderator-home']);
+      } else {
+        this.sharedService.homeClassData.emit("nav-link");
+        this.sharedService.profileClassData.emit("nav-link active");
+      }
     }
     else{
       this.router.navigate(['/signin']);
