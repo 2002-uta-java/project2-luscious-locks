@@ -32,6 +32,7 @@ export class HomepageComponent implements OnInit {
   imageComments:Comment[];
   currentComment:string = "";
   averageRating:number;
+  myRating:number;
 
   ngOnInit(): void {
     if(this.userSession.getToken()){
@@ -77,8 +78,9 @@ export class HomepageComponent implements OnInit {
         console.log(data);
         this.currentImages = data as Image[];
         this.currentImages.forEach(image=>{
-          if(image.id == id){
+          if(image.id == id) {
             this.currentImage = image;
+
             //get comments by image id and save them locally for modal
             this.apiService.getCommentsOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
               (data)=>{
@@ -89,14 +91,15 @@ export class HomepageComponent implements OnInit {
                   console.log(comment);
                 })
               }
-              )
-              //get ratings by image id and save them locally for modal
-              this.apiService.getRatingOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
-                (data)=>{
-                  console.log(data);
-                  this.imageRatings = data as Rating[];
-                  console.log(this.imageRatings);
-                  this.imageRatings.forEach(rating=>{
+            );
+
+            //get ratings by image id and save them locally for modal
+            this.apiService.getRatingOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
+              (data)=>{
+                console.log(data);
+                this.imageRatings = data as Rating[];
+                console.log(this.imageRatings);
+                this.imageRatings.forEach(rating=>{
                   console.log(rating);
                 });
                 
@@ -108,30 +111,35 @@ export class HomepageComponent implements OnInit {
                 });
                 
                 this.averageRating = this.getAverageRatings();
-                
-                //open template modal
-                this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',
-                backdropClass: 'light-grey-backdrop', scrollable: true});
+                this.myRating = this.currentRating.rating;
               }
-              );
-            }
-          })
-        }
-        )
+            );
+            //open template modal
+            this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',
+            backdropClass: 'light-grey-backdrop', scrollable: true});
+          }
+        })
       }
+    )
+  }
       
-      postInfo(){
-        this.modalService.dismissAll();
-        console.log(this.currentComment);
+  postInfo(){
+    this.modalService.dismissAll();
+    console.log(this.currentComment);
+
+    this.apiService.postRatingOnImage(this.user.id, this.myRating.toString(), this.token).subscribe(
+      (data) => {
+        console.log(data);
       }
+    );
+  }
       
-      getAverageRatings(){
-        let avg:number = 0;
+  getAverageRatings(){
+    let avg:number = 0;
     this.imageRatings.forEach(rating=>{
       avg = avg + rating.rating;
     })
     console.log("sum: " + avg);
     return (avg / this.imageRatings.length);
   }
-
 }

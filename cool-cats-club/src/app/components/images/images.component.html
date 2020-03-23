@@ -6,7 +6,7 @@
 </div>
 
 <ng-template #content let-modal>
-  <div *ngIf="!isModerator">
+  <div *ngIf="!isModerator" class="overflow-auto">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">{{currentImage.description}}</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -19,10 +19,23 @@
         <div class="card-body">
             <div class="card-text">
               <p>Posted by: {{currentImage.poster.username}}</p>
-              <p>Average Rating: {{averageRating}}<br></p>
-              <p *ngIf='currentRating'>
-                User Rating: {{currentRating.rating}}
-              </p>
+              <div class="d-flex flex-row align-middle">
+                <p class="mt-2 mr-2">Average Rating: </p>
+                <ng-template #t let-fill="fill">
+                  <span class="star" [class.full]="fill === 100">
+                    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                  </span>
+                </ng-template>
+                <ngb-rating [(rate)]="averageRating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+              </div>
+              <div class="d-flex flex-row align-middle">
+                <p class="mt-2 mr-2">My Rating: </p>
+                <ngb-rating [(rate)]="myRating" [readonly]="true" [max]="5">
+                  <ng-template let-fill="fill" let-index="index">
+                    <span class="star" [class.filled]="fill === 100" [class.bad]="index < myRating">&#9733;</span>
+                  </ng-template>
+                </ngb-rating>
+              </div>
               <!--User comment-->
               <input class="form-control" type="text" placeholder="leave a comment" [(ngModel)]='currentComment'><br>
               <!--Comments-->

@@ -30,7 +30,8 @@ export class ImagesComponent implements OnInit {
   currentRating:Rating;
   imageComments:Comment[];
   currentComment:string = "";
-  averageRating:number|string;
+  averageRating:number;
+  myRating:number = 0;
 
   constructor(public router: Router, private apiService: ApiService, 
     private userSession: UserSessionService, private modalService: NgbModal, private sharedService: SharedService) { }
@@ -128,6 +129,7 @@ export class ImagesComponent implements OnInit {
         });
 
         this.averageRating = this.getAverageRatings();
+        this.myRating = this.currentRating.rating;
         console.log(this.averageRating);
       }
     );
@@ -143,7 +145,7 @@ export class ImagesComponent implements OnInit {
       avg = avg + rating.rating;
     })
     console.log("sum: " + avg);
-    return this.imageRatings.length ? (avg / this.imageRatings.length) : 'No Rating';
+    return this.imageRatings.length ? (avg / this.imageRatings.length) : 0;
   }
 
   accept() {
