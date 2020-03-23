@@ -27,6 +27,7 @@ export class ModeratorUsersComponent implements OnInit {
       this.sharedService.isSignedInData.emit(true);
       this.sharedService.homeClassData.emit("nav-link active");
       this.sharedService.profileClassData.emit("nav-link");
+      this.getUsers();
     }
     else{
       this.router.navigate(['/signin']);
