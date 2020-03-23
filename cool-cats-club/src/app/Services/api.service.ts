@@ -2,6 +2,7 @@ import { Image } from './../components/homepage/image';
 import { Comment } from './../components/homepage/comment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { User } from '../components/profile-info/user';
 
 @Injectable({
   providedIn: 'root'
@@ -125,25 +126,10 @@ export class ApiService {
     }
 
     //Method to put ban on user
-    public putBanOnUser(id:number, status:boolean, auth:string){
-      let data = {'banned': status};
+    public putUpdateUser(id:number, user:User, auth:string){
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
-    }
-
-    //Method to post warning on user
-    public putWarningOnUSer(id:number, warning:string, auth:string){
-      let data = {'warning': warning};
-      const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
-    }
-
-     //Method to post rating on image
-     public putMutedOnUSer(id:number, status:boolean, auth:string){
-      let data = {'muted': status};
-      const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
-    }    
+      return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(user), {headers: headers.append('Authorization', `Basic ${auth}`)});
+    }   
 
     public putLoginOnUser(id: number, username: string, password: string, auth: string) {
       let data = {'username': username, 'password': password};

@@ -72,24 +72,39 @@ export class ModeratorUsersComponent implements OnInit {
   }
 
   postInfo(){
-    if(this.ban){
-      console.log("changed on click to: " + this.ban);
+    if(this.ban || this.ban === false){
+      console.log("clicked on ban: " + this.ban);
       if(this.ban !== this.user.banned){
-        //sent api request to update
+        this.user.banned = this.ban;
+        this.apiService.putUpdateUser(this.user.id,this.user, this.userSession.getToken()).subscribe(
+          (data)=>{
+            console.log(data);
+          }
+        );
       }
     }
-    if(this.mute){
+    if(this.mute || this.mute === false){
       if(this.mute !== this.user.muted){
-        //sent api request to update
+        this.user.muted = this.mute;
+        this.apiService.putUpdateUser(this.user.id,this.user, this.userSession.getToken()).subscribe(
+          (data)=>{
+            console.log(data);
+          }
+        );
       }
-      console.log("changed on click to: " + this.mute);
+      console.log("clicked on mute: " + this.mute);
     }
     this.modalService.dismissAll();
   }
 
   postWarning(){
     if(this.message){
-      //sent api request to update
+        this.user.warning = this.message;
+        this.apiService.putUpdateUser(this.user.id,this.user, this.userSession.getToken()).subscribe(
+          (data)=>{
+            console.log(data);
+          }
+        );
     }
     this.modalService.dismissAll();
   }
