@@ -1,3 +1,4 @@
+import { Image } from './../components/homepage/image';
 import { Comment } from './../components/homepage/comment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -95,17 +96,20 @@ export class ApiService {
     }
 
     //Method to put flag on image
-    public putFlagOnImage(id:number, status:boolean, auth:string){
-      let data = {'flagged': status};
+    public putFlagOnImage(id:number, image:Image, auth:string){
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.put(this.baseUrl+`/images/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+      return this.httpClient.put(this.baseUrl+`/images/${id}`,JSON.stringify(image), {headers: headers.append('Authorization', `Basic ${auth}`)});
+    }
+
+    //Method to get comment by id
+    public getCommentsByID(id:number, auth:string){
+      return this.httpClient.get(this.baseUrl+`/comments/${id}`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
     }
 
     //Method to put flag on comment
-    public putFlagOnComment(id:number, status:boolean, auth:string){
-      let data = {'rating': status};
+    public putFlagOnComment(id:number, comment:Comment, auth:string){
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.put(this.baseUrl+`/comments/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+      return this.httpClient.put(this.baseUrl+`/comments/${id}`,JSON.stringify(comment), {headers: headers.append('Authorization', `Basic ${auth}`)});
     }
 
     //Method to put resolution on image, accepted = true/false

@@ -149,7 +149,8 @@ export class HomepageComponent implements OnInit {
   }
 
   flagImage(){
-    this.apiService.putFlagOnImage(this.currentImage.id, true, this.userSession.getToken()).subscribe(
+    this.currentImage['flagged'] = true;
+    this.apiService.putFlagOnImage(this.currentImage.id, this.currentImage, this.userSession.getToken()).subscribe(
       (data)=>{
         console.log(data);
       }
@@ -158,9 +159,17 @@ export class HomepageComponent implements OnInit {
   }
 
   flagComment(id:number){
-    this.apiService.putFlagOnComment(id, true, this.userSession.getToken()).subscribe(
+    let tempComment:Comment;
+    this.apiService.getCommentsByID(id, this.userSession.getToken()).subscribe(
       (data)=>{
-        console.log(data);
+        tempComment = data as Comment;
+        tempComment['flagged']=true;
+        console.log(tempComment + " temp");
+      }
+    );
+    this.apiService.putFlagOnComment(id, tempComment, this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data + " put");
       }
     );
   }
