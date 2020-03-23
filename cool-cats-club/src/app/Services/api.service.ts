@@ -22,6 +22,11 @@ export class ApiService {
     return this.httpClient.get(this.baseUrl+'/users',{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
   }
 
+  //Method to get all comment
+  public getComments(auth){
+    return this.httpClient.get(this.baseUrl+'/comments',{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
+  }
+
   //Log a user in based on provided credentials, returns 401 if user doesn't exist
   public loginUser(username:string, password:string){
     let data = {'username': username, 'password': password};
