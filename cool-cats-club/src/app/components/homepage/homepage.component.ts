@@ -25,6 +25,8 @@ export class HomepageComponent implements OnInit {
 
   token:string;
 
+  warned:boolean;
+
   //Image fields to populate modal
   currentImages:Image[];
   currentImage:Image;
@@ -60,6 +62,9 @@ export class HomepageComponent implements OnInit {
       (data)=>{
       console.log(data);
       this.user = data as User;
+      if(this.user.warning){
+        this.warned=true;
+      }
     })
   }
 
@@ -132,16 +137,14 @@ export class HomepageComponent implements OnInit {
       tempComment['text'] = this.currentComment;
       tempComment['author'] = this.user;
       tempComment['image'] = this.currentImage;
+      this.apiService.postCommentOnImage(this.currentImage.id, tempComment, this.userSession.getToken()).subscribe(
+        (data)=>{
+          console.log(data);
+        }
+      )
     }
-    this.apiService.postCommentOnImage(this.currentImage.id, tempComment, this.userSession.getToken()).subscribe(
-      (data)=>{
-        console.log(data);
-      }
-    )
     this.currentComment="";
     this.modalService.dismissAll();
-  }
-
     this.apiService.postRatingOnImage(this.user.id, this.myRating.toString(), this.token).subscribe(
       (data) => {
         console.log(data);
@@ -187,5 +190,16 @@ export class HomepageComponent implements OnInit {
         console.log(data + " put");
       }
     );
+  }
+
+  closeAlert(){
+    this.warned=false;
+    this.user.warning = "";
+    this.apiService.putUpdateUser(this.user.id, this.user, this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data);
+      }
+    );
+    window.location.reload();
   }
 }

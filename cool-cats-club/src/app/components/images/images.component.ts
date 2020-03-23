@@ -149,7 +149,9 @@ export class ImagesComponent implements OnInit {
   }
 
   accept() {
-    this.apiService.putFlagOnImage(this.currentImage.id, false, this.token).subscribe(
+    this.currentImage['accepted']=true;
+    this.currentImage['flagged']=false;
+    this.apiService.putFlagOnImage(this.currentImage.id, this.currentImage, this.token).subscribe(
       (data) => {
         window.location.reload();
       }

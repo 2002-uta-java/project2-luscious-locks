@@ -35,6 +35,6 @@
                 <a *ngIf='isSignedIn' [class]="moderatorCommentsClass" (click)="showComments()">Comments</a>
             </li>
         </ul>
-        <button *ngIf='isSignedIn' class="nav-link" (click)="signOut()">sign out</button>
+        <button *ngIf='isSignedIn' class="nav-link btn btn-outline-dark" (click)="signOut()">sign out</button>
     </div>
 </nav>
