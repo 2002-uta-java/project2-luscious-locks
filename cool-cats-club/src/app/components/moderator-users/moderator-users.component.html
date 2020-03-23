@@ -1,1 +1,65 @@
-<p>moderator-users works!</p>
+<h2 class="text-center">Manage users</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>Username</td>
+            <td>Muted</td>
+            <td>Banned</td>
+            <td>Modify</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor='let user of users'>
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.muted}}</td>
+            <td>{{user.banned}}</td>
+            <td>
+                <button class="btn btn-group btn-outline-info" (click)="editModal(edit, user.id)">edit</button>
+                <button class="btn btn-group btn-outline-warn" (click)="warnModal(edit, user.id)">warn</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<ng-template #edit let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Manage user</h4>
+    </div>
+    <div class="modal-body">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-success">
+                <input type="radio" name="options" id="ban" autocomplete="off" (click)="setToBan(true)">Ban</label>
+            <label class="btn btn-outline-danger">
+                <input type="radio" name="options" id="unban" autocomplete="off" (click)="setToBan(false)">Unban</label>
+        </div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-success">
+                <input type="radio" name="options" id="mute" autocomplete="off" (click)="setToMute(true)">Mute</label>
+            <label class="btn btn-outline-danger">
+                <input type="radio" name="options" id="unmute" autocomplete="off" (click)="setToMute(false)">Unmute</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-info" (click)="postInfo()">Save</button>
+    </div>
+</ng-template>
+
+
+<ng-template #warn let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Warn user</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="warning">Example textarea</label>
+            <textarea class="form-control" id="warning" [(ngModel)]="message" rows="3"></textarea>
+          </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-info" (click)="postWarning()">Save</button>
+    </div>
+</ng-template>

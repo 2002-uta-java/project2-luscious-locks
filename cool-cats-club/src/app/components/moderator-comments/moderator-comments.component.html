@@ -1,1 +1,24 @@
-<p>moderator-comments works!</p>
+<h2 class="text-center">Manage comments</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Username</td>
+            <td>Comment ID</td>
+            <td>Comment</td>
+            <td>Image</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor='let comment of comments'>
+            <td>{{comment.author.username}}</td>
+            <td>{{comment.id}}</td>
+            <td>{{comment.text}}</td>
+            <td>{{comment.image.url}}</td>
+            <td>
+                <button class="btn btn-group btn-outline-warn" (click)="dismissComment(comment.id)">dismiss</button>
+                <button class="btn btn-group btn-outline-danger" (click)="deleteComment(comment.id)">delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
