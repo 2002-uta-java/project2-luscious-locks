@@ -48,7 +48,6 @@ export class HomepageComponent implements OnInit {
 
   populateUser(){
     console.log(this.token);
-    console.log(atob(this.token).split(':')[0]);
     this.apiService.loginUser(atob(this.token).split(':')[0],atob(this.token).split(':')[1]).subscribe(
       (data)=>{
       console.log(data);
