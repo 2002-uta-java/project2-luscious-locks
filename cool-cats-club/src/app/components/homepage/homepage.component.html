@@ -59,7 +59,9 @@
                 User Rating: {{currentRating.rating}}
               </p> -->
               <!--User comment-->
-              <input class="form-control" type="text" placeholder="leave a comment" [(ngModel)]='currentComment'><br>
+              <div *ngIf="!isMuted">
+                <input class="form-control" type="text" placeholder="leave a comment" [(ngModel)]='currentComment'><br>
+              </div>
               <!--Comments-->
               <table class="table">
                 <thead><tr><th>Comments:</th><th></th></tr></thead>
