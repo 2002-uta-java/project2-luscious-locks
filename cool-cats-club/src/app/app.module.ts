@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
@@ -44,6 +44,7 @@ import { ModeratorImagesComponent } from './components/moderator-images/moderato
   imports: [
     BrowserModule,
     NgbModule,
+    NgbAlertModule,
     RouterModule.forRoot([{
       path: 'home',
       component: HomepageComponent

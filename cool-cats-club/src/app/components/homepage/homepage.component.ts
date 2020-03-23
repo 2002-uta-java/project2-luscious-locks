@@ -1,3 +1,4 @@
+import { Comment } from './comment';
 import { User } from './../profile-info/user';
 import { Rating } from './rating';
 import { Image } from './image';
@@ -23,6 +24,10 @@ export class HomepageComponent implements OnInit {
   images:Image[];
 
   token:string;
+
+  warned:boolean;
+
+  isMuted: boolean;
 
   //Image fields to populate modal
   currentImages:Image[];
@@ -59,6 +64,11 @@ export class HomepageComponent implements OnInit {
       (data)=>{
       console.log(data);
       this.user = data as User;
+      this.isMuted = this.user.muted;
+      console.log(this.isMuted);
+      if(this.user.warning){
+        this.warned=true;
+      }
     })
   }
 
@@ -111,7 +121,9 @@ export class HomepageComponent implements OnInit {
                 });
                 
                 this.averageRating = this.getAverageRatings();
-                this.myRating = this.currentRating.rating;
+                if(this.currentRating) {
+                  this.myRating = this.currentRating.rating;
+                }
               }
             );
             //open template modal
@@ -124,9 +136,21 @@ export class HomepageComponent implements OnInit {
   }
       
   postInfo(){
-    this.modalService.dismissAll();
+    let tempComment;
     console.log(this.currentComment);
-
+    if(this.currentComment){
+      tempComment = new Comment();
+      tempComment['text'] = this.currentComment;
+      tempComment['author'] = this.user;
+      tempComment['image'] = this.currentImage;
+      this.apiService.postCommentOnImage(this.currentImage.id, tempComment, this.userSession.getToken()).subscribe(
+        (data)=>{
+          console.log(data);
+        }
+      )
+    }
+    this.currentComment="";
+    this.modalService.dismissAll();
     this.apiService.postRatingOnImage(this.user.id, this.myRating.toString(), this.token).subscribe(
       (data) => {
         console.log(data);
@@ -140,6 +164,48 @@ export class HomepageComponent implements OnInit {
       avg = avg + rating.rating;
     })
     console.log("sum: " + avg);
-    return (avg / this.imageRatings.length);
+    if(avg===0){
+      return 0;
+    }
+    else{
+      return (avg / this.imageRatings.length);
+    }
+  }
+
+  flagImage(){
+    this.currentImage['flagged'] = true;
+    this.apiService.putFlagOnImage(this.currentImage.id, this.currentImage, this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data);
+      }
+    );
+    this.modalService.dismissAll();
+  }
+
+  flagComment(id:number){
+    let tempComment:Comment;
+    this.apiService.getCommentsByID(id, this.userSession.getToken()).subscribe(
+      (data)=>{
+        tempComment = data as Comment;
+        tempComment['flagged']=true;
+        console.log(tempComment + " temp");
+      }
+    );
+    this.apiService.putFlagOnComment(id, tempComment, this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data + " put");
+      }
+    );
+  }
+
+  closeAlert(){
+    this.warned=false;
+    this.user.warning = "";
+    this.apiService.putUpdateUser(this.user.id, this.user, this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data);
+      }
+    );
+    window.location.reload();
   }
 }

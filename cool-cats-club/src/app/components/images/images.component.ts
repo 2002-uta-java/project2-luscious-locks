@@ -22,7 +22,7 @@ export class ImagesComponent implements OnInit {
   index;
   rating: number[] = [1, 2, 3];
   comment: string = "";
-  isMine: boolean = true;
+  isMuted: boolean = false;
   isModerator: boolean = false;
 
   currentImage:Image;
@@ -47,17 +47,10 @@ export class ImagesComponent implements OnInit {
 
     this.token = this.userSession.getToken();
     if(this.userSession.getModerator()) {
-      console.log('im a mod');
       this.isModerator = true;
-    } else {
-      console.log('not a mod');
     }
 
     this.populateUser();
-
-    if(this.router.url === '/home') {
-      this.isMine = false;
-    }
 
     // this.apiService.deleteImage('k65mhSB').subscribe(
     //   (data)=>{
@@ -72,6 +65,8 @@ export class ImagesComponent implements OnInit {
       (data)=>{
         console.log(data);
         this.user = data;
+
+        this.isMuted = this.user.muted;
 
         if(!this.isModerator) {
           this.apiService.getUserImagesByID(this.user.id, this.token).subscribe(
@@ -129,7 +124,9 @@ export class ImagesComponent implements OnInit {
         });
 
         this.averageRating = this.getAverageRatings();
-        this.myRating = this.currentRating.rating;
+        if(this.currentRating) {
+          this.myRating = this.currentRating.rating;
+        }
         console.log(this.averageRating);
       }
     );
@@ -139,6 +136,29 @@ export class ImagesComponent implements OnInit {
     backdropClass: 'light-grey-backdrop', scrollable: true});  
   }
   
+  postInfo(){
+    let tempComment;
+    console.log(this.currentComment);
+    if(this.currentComment){
+      tempComment = new Comment();
+      tempComment['text'] = this.currentComment;
+      tempComment['author'] = this.user;
+      tempComment['image'] = this.currentImage;
+      this.apiService.postCommentOnImage(this.currentImage.id, tempComment, this.userSession.getToken()).subscribe(
+        (data)=>{
+          console.log(data);
+        }
+      )
+    }
+    this.currentComment="";
+    this.modalService.dismissAll();
+    this.apiService.postRatingOnImage(this.user.id, this.myRating.toString(), this.token).subscribe(
+      (data) => {
+        console.log(data);
+      }
+    );
+  }
+
   getAverageRatings(){
     let avg:number = 0;
     this.imageRatings.forEach(rating=>{
@@ -149,7 +169,9 @@ export class ImagesComponent implements OnInit {
   }
 
   accept() {
-    this.apiService.putFlagOnImage(this.currentImage.id, false, this.token).subscribe(
+    this.currentImage['accepted']=true;
+    this.currentImage['flagged']=false;
+    this.apiService.putFlagOnImage(this.currentImage.id, this.currentImage, this.token).subscribe(
       (data) => {
         window.location.reload();
       }
