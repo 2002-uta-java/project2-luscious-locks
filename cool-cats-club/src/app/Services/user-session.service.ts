@@ -26,6 +26,7 @@ export class UserSessionService {
   clearToken(){
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('isModerator');
+    console.log('removes session');
     window.localStorage.clear();
   }
 }
