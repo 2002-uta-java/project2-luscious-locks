@@ -17,9 +17,6 @@ export class ApiService {
 
   baseUrl: string = 'http://ec2-18-224-6-156.us-east-2.compute.amazonaws.com:8090/Proj2-0.0.1-SNAPSHOT';
 
-  //Basic Authorization, will be replaced with user token when logged in.
-  basicAuth: string = 'YnJpYW46d2hhdGV2';
-
   //Method to get all users, using Basic Auth
   public getUsers(auth){
     return this.httpClient.get(this.baseUrl+'/users',{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
