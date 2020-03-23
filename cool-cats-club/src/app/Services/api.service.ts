@@ -1,5 +1,8 @@
+import { Image } from './../components/homepage/image';
+import { Comment } from './../components/homepage/comment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { User } from '../components/profile-info/user';
 
 @Injectable({
   providedIn: 'root'
@@ -70,14 +73,13 @@ export class ApiService {
 
     //Method to get rating by id
     public getRatingByID(id:number, auth:string){
-      return this.httpClient.get(this.baseUrl+`/rating/${id}`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
+      return this.httpClient.get(this.baseUrl+`/ratings/${id}`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
     }
 
     //Method to post comment on image
-    public postCommentOnImage(id:number, comment:string, auth:string){
-      let data = {'comment': comment};
+    public postCommentOnImage(id:number, comment:Comment, auth:string){
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.post(this.baseUrl+`/images/${id}/comment`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+      return this.httpClient.post(this.baseUrl+`/images/${id}/comments`,JSON.stringify(comment), {headers: headers.append('Authorization', `Basic ${auth}`)});
     }
 
     //Method to get all comments by of an image by id
@@ -96,21 +98,24 @@ export class ApiService {
     public postRatingOnImage(id:number, rating:string, auth:string){
       let data = {'rating': rating};
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.post(this.baseUrl+`/images/${id}/rating`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+      return this.httpClient.post(this.baseUrl+`/images/${id}/ratings`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
     }
 
     //Method to put flag on image
-    public putFlagOnImage(id:number, status:boolean, auth:string){
-      let data = {'flagged': status};
+    public putFlagOnImage(id:number, image:Image, auth:string){
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.put(this.baseUrl+`/images/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+      return this.httpClient.put(this.baseUrl+`/images/${id}`,JSON.stringify(image), {headers: headers.append('Authorization', `Basic ${auth}`)});
+    }
+
+    //Method to get comment by id
+    public getCommentsByID(id:number, auth:string){
+      return this.httpClient.get(this.baseUrl+`/comments/${id}`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
     }
 
     //Method to put flag on comment
-    public putFlagOnComment(id:number, status:boolean, auth:string){
-      let data = {'rating': status};
+    public putFlagOnComment(id:number, comment:Comment, auth:string){
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.post(this.baseUrl+`/comments/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+      return this.httpClient.put(this.baseUrl+`/comments/${id}`,JSON.stringify(comment), {headers: headers.append('Authorization', `Basic ${auth}`)});
     }
 
     //Method to put resolution on image, accepted = true/false
@@ -126,25 +131,10 @@ export class ApiService {
     }
 
     //Method to put ban on user
-    public putBanOnUser(id:number, status:boolean, auth:string){
-      let data = {'banned': status};
+    public putUpdateUser(id:number, user:User, auth:string){
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
-    }
-
-    //Method to post warning on user
-    public putWarningOnUSer(id:number, warning:string, auth:string){
-      let data = {'warning': warning};
-      const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
-    }
-
-     //Method to post rating on image
-     public putMutedOnUSer(id:number, status:boolean, auth:string){
-      let data = {'muted': status};
-      const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
-    }    
+      return this.httpClient.put(this.baseUrl+`/users/${id}`,JSON.stringify(user), {headers: headers.append('Authorization', `Basic ${auth}`)});
+    }   
 
     public putLoginOnUser(id: number, username: string, password: string, auth: string) {
       let data = {'username': username, 'password': password};
