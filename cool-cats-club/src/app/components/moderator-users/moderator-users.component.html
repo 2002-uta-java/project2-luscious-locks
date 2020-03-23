@@ -17,7 +17,7 @@
             <td>{{user.banned}}</td>
             <td>
                 <button class="btn btn-group btn-outline-info" (click)="editModal(edit, user.id)">edit</button>
-                <button class="btn btn-group btn-outline-warn" (click)="warnModal(edit, user.id)">warn</button>
+                <button class="btn btn-group btn-outline-danger" (click)="warnModal(warn, user.id)">warn</button>
             </td>
         </tr>
     </tbody>
@@ -55,7 +55,7 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="warning">Example textarea</label>
+            <label for="warning">Warning message</label>
             <textarea class="form-control" id="warning" [(ngModel)]="message" rows="3"></textarea>
           </div>
     </div>
