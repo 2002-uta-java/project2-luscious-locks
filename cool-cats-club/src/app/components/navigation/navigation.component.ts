@@ -63,24 +63,24 @@ export class NavigationComponent implements OnInit {
   }
 
   goHome(){
-    if(!this.isModerator) {
-      this.homeClass = "nav-link active";
-      this.profileclass = "nav-link";
-      this.router.navigate(['/home']);
-    } else {
-      this.moderatorHomeClass = "nav-link active";
-      this.moderatorUsersClass = "nav-link";
-      this.moderatorCommentsClass = "nav-link";
-      this.router.navigate(['/moderator-home']);
-    }
+    this.homeClass = "nav-link active";
+    this.profileclass = "nav-link";
+    this.router.navigate(['/home']);
   }
-
+  
   showProfile(){
     this.homeClass = "nav-link";
     this.profileclass = "nav-link active";
     this.router.navigate(['/profile']);
   }
 
+  goModeratorHome() {
+    this.moderatorHomeClass = "nav-link active";
+    this.moderatorUsersClass = "nav-link";
+    this.moderatorCommentsClass = "nav-link";
+    this.router.navigate(['/moderator-home']);
+  }
+  
   showUsers() {
     this.moderatorHomeClass = "nav-link";
     this.moderatorUsersClass = "nav-link active";

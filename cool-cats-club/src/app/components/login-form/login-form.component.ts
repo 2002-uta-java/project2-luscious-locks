@@ -47,7 +47,9 @@ export class LoginFormComponent implements OnInit {
         this.sharedService.isSignedInData.emit(this.found);
         this.sharedService.isModeratorData.emit(this.isModerator);
         this.userSession.setToken(`${this.username}:${this.password}`);
-        this.userSession.setModerator(this.isModerator);
+        if(this.isModerator) {
+          this.userSession.setModerator(this.isModerator);
+        }
         console.log("token: " + this.userSession.getToken());
         if(this.isModerator) {
           this.router.navigate(['/moderator-home'])
