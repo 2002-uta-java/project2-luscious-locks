@@ -1,7 +1,7 @@
 <div class="container d-flex flex-row flex-wrap">
     <div class="p-2" *ngFor="let image of images">
-      <img *ngIf="!isModerator && !image.flagged" (click)='openModalById(content, image.id)' class="img-thumbnail" style="cursor: pointer" src={{image.url}} data-toggle="modal" data-target="#imgModal">
-      <img *ngIf="isModerator && image.flagged" (click)='openModalById(content, image.id)' class="img-thumbnail" style="cursor: pointer" src={{image.url}} data-toggle="modal" data-target="#imgModal">
+      <img *ngIf="!isModerator" (click)='openModalById(content, image.id)' class="img-thumbnail" style="cursor: pointer" src={{image.url}} data-toggle="modal" data-target="#imgModal">
+      <img *ngIf="isModerator" (click)='openModalById(content, image.id)' class="img-thumbnail" style="cursor: pointer" src={{image.url}} data-toggle="modal" data-target="#imgModal">
     </div>
 </div>
 

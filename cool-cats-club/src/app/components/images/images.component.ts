@@ -75,11 +75,7 @@ export class ImagesComponent implements OnInit {
         if(!this.isModerator) {
           this.apiService.getUserImagesByID(this.user.id, this.token).subscribe(
             (data: Image[])=>{
-              for(let i = 0; i < data.length; i++) {
-                if(!data[i].flagged) {
-                  this.images.push(data[i]);
-                }
-              } 
+              this.images = data;
               console.log(this.images);
             }
           );
