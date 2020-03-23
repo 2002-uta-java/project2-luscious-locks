@@ -26,7 +26,7 @@
             </li>
 
             <li *ngIf='isModerator' class="nav-item" style="cursor: pointer">
-                <a *ngIf='isSignedIn' [class]="moderatorHomeClass" (click)="goModeratorHome()">Home</a>
+                <a *ngIf='isSignedIn' [class]="moderatorHomeClass" (click)="goModeratorHome()">Images</a>
             </li>
             <li *ngIf='isModerator' class="nav-item" style="cursor: pointer">
                 <a *ngIf='isSignedIn' [class]="moderatorUsersClass" (click)="showUsers()">Users</a>

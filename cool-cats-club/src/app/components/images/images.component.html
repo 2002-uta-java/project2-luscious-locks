@@ -1,10 +1,12 @@
 <div class="container d-flex flex-row flex-wrap">
     <div class="p-2" *ngFor="let image of images">
-        <img (click)='openModalById(content, image.id)' class="img-thumbnail" style="cursor: pointer" src={{image.url}} data-toggle="modal" data-target="#imgModal">
+      <img *ngIf="!isModerator && !image.flagged" (click)='openModalById(content, image.id)' class="img-thumbnail" style="cursor: pointer" src={{image.url}} data-toggle="modal" data-target="#imgModal">
+      <img *ngIf="isModerator && image.flagged" (click)='openModalById(content, image.id)' class="img-thumbnail" style="cursor: pointer" src={{image.url}} data-toggle="modal" data-target="#imgModal">
     </div>
 </div>
 
 <ng-template #content let-modal>
+  <div *ngIf="!isModerator">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">{{currentImage.description}}</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -17,7 +19,7 @@
         <div class="card-body">
             <div class="card-text">
               <p>Posted by: {{currentImage.poster.username}}</p>
-              <p>Average Rating: {{getAverageRatings()}}<br></p>
+              <p>Average Rating: {{averageRating}}<br></p>
               <p *ngIf='currentRating'>
                 User Rating: {{currentRating.rating}}
               </p>
@@ -43,25 +45,31 @@
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
     </div>
-</ng-template>
+  </div>
 
-<!-- <div class="modal fade" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="imgModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="imgModalLabel">Image </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img *ngIf="!isMine" (click)="flag()" style="cursor: pointer" src="assets/flag.ico" width="25" height="25">
-                <label>Comment: <input [(ngModel)]="comment" type="text" class="form-control"></label>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="updateProfile">Comment</button>
-            </div>
+  <div *ngIf="isModerator">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{currentImage.description}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <img class="card-img-top" src={{currentImage.url}}>
+        <div class="card-body">
+            <div class="card-text">
+              <p>Posted by: {{currentImage.poster.username}}</p>
+              <p>Average Rating: {{averageRating}}<br></p>
+              <div class="text-center">
+                  <p>Keep Image?</p>
+                  <img (click)="accept()" class="ml-2 mr-2" src="../../assets/accept.ico" style="cursor: pointer" height="40" width="40"/>
+                  <img (click)="decline()" class="ml-2 mr-2" src="../../assets/decline.ico" style="cursor: pointer" height="40" width="40"/>
+              </div>
+          </div>
+        </div>
+        <br>
       </div>
     </div>
-  </div> -->
+  </div>
+</ng-template>
