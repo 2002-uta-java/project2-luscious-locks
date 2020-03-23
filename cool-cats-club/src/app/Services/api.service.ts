@@ -95,7 +95,7 @@ export class ApiService {
     }
 
     //Method to post rating on image
-    public postRatingOnImage(id:number, rating:string, auth:string){
+    public postRatingOnImage(id:number, rating:number, auth:string){
       let data = {'rating': rating};
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
       return this.httpClient.post(this.baseUrl+`/images/${id}/ratings`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
