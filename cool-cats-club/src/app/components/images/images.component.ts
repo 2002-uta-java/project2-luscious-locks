@@ -132,8 +132,7 @@ export class ImagesComponent implements OnInit {
     );
 
     //open template modal
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',
-    backdropClass: 'light-grey-backdrop', scrollable: true});  
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', scrollable: true});  
   }
   
   postInfo(){
@@ -171,17 +170,13 @@ export class ImagesComponent implements OnInit {
   accept() {
     this.currentImage['accepted']=true;
     this.currentImage['flagged']=false;
-    this.apiService.putFlagOnImage(this.currentImage.id, this.currentImage, this.token).subscribe(
-      (data) => {
-        window.location.reload();
-      }
-    );
+    this.apiService.putFlagOnImage(this.currentImage.id, this.currentImage, this.token).subscribe();
+    window.location.reload();
   }
 
   decline() {
     this.apiService.deleteImageDB(this.currentImage.id, this.token).subscribe(
-      (data) => {
-        console.log(data);
+      () => {
         window.location.reload();
       }
     );

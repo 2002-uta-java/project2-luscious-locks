@@ -6,6 +6,7 @@
 </div>
 
 <ng-template #content let-modal>
+  
   <div *ngIf="!isModerator" class="overflow-auto">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">{{currentImage.description}}</h4>
@@ -30,7 +31,7 @@
               </div>
               <div class="d-flex flex-row align-middle">
                 <p class="mt-2 mr-2">My Rating: </p>
-                <ngb-rating [(rate)]="myRating" [readonly]="true" [max]="5">
+                <ngb-rating [(rate)]="myRating" [max]="5">
                   <ng-template let-fill="fill" let-index="index">
                     <span class="star" [class.filled]="fill === 100" [class.bad]="index < myRating">&#9733;</span>
                   </ng-template>

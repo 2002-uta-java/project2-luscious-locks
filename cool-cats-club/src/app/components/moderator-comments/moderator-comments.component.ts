@@ -14,7 +14,7 @@ import { ApiService } from 'src/app/Services/api.service';
 })
 export class ModeratorCommentsComponent implements OnInit {
 
-  comments:Comment[];
+  comments:Comment[] = new Comment()[0];
 
   constructor(private sharedService: SharedService, private userSession: UserSessionService, private router: Router,
     private apiService: ApiService) { }
@@ -40,13 +40,7 @@ export class ModeratorCommentsComponent implements OnInit {
   getComments(){
     this.apiService.getComments(this.userSession.getToken()).subscribe(
       (data)=>{
-        let temp:Comment[];
-        temp = data as Comment[];
-        temp.forEach(c=>{
-          if(c.flagged){
-            this.comments.push(c);
-          }
-        })
+        this.comments = data as Comment[];
       }
     )
   }
@@ -55,6 +49,11 @@ export class ModeratorCommentsComponent implements OnInit {
     this.comments.forEach(c=>{
       if(c.id===id){
         c.flagged = false;
+        this.apiService.putFlagOnComment(c.id, c, this.userSession.getToken()).subscribe(
+          (data)=>{
+            console.log(data);
+          }
+        )
       }
     })
     this.comments = [];
@@ -64,7 +63,11 @@ export class ModeratorCommentsComponent implements OnInit {
   deleteComment(id:number){
     this.comments.forEach(c=>{
       if(c.id===id){
-        //api request to delete comment
+        this.apiService.deleteComment(c.id, this.userSession.getToken()).subscribe(
+          (data)=>{
+            console.log(data);
+          }
+        )
       }
     })
     this.comments = [];

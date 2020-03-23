@@ -6,6 +6,7 @@
             <td>Comment ID</td>
             <td>Comment</td>
             <td>Image</td>
+            <td>Flagged</td>
             <td>Action</td>
         </tr>
     </thead>
@@ -14,9 +15,10 @@
             <td>{{comment.author.username}}</td>
             <td>{{comment.id}}</td>
             <td>{{comment.text}}</td>
-            <td>{{comment.image.url}}</td>
+            <td><img src={{comment.image.url}} height="30" width="30"></td>
+            <td>{{comment.flagged}}</td>
             <td>
-                <button class="btn btn-group btn-outline-warn" (click)="dismissComment(comment.id)">dismiss</button>
+                <button class="btn btn-group btn-outline-secondary" (click)="dismissComment(comment.id)">dismiss</button>
                 <button class="btn btn-group btn-outline-danger" (click)="deleteComment(comment.id)">delete</button>
             </td>
         </tr>
