@@ -15,12 +15,27 @@
       <div class="card">
         <img class="card-img-top" src={{currentImage.url}}>
         <div class="card-body">
-            <p class="card-text">{{currentImage.description}}<br>posted by: {{currentImage.poster.username}}<br>
-              Rating: ******<br>
-              user rating if any<br>
-              <input class="form-control" type="text" placeholder="leave a comment" [value]='currentComment'><br>
-              All other comments here!
-            </p>
+            <div class="card-text">
+              <p>Posted by: {{currentImage.poster.username}}</p>
+              <p>Average Rating: {{getAverageRatings()}}<br></p>
+              <p *ngIf='currentRating'>
+                User Rating: {{currentRating.rating}}
+              </p>
+              <!--User comment-->
+              <input class="form-control" type="text" placeholder="leave a comment" [(ngModel)]='currentComment'><br>
+              <!--Comments-->
+              <table class="table">
+                <thead><tr><th>Comments:</th></tr></thead>
+                <tbody>
+                  <tr *ngFor='let comment of imageComments'>
+                    <td>
+                      {{comment.text}}<br>
+                      <sub>by: {{comment.author.username}}</sub>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
         </div>
         <br>
       </div>
