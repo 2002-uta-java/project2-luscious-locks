@@ -17,19 +17,21 @@ export class ImagesComponent implements OnInit {
 
   user;
   token;
-  images;
+  images: Image[] = [];
   dbImages;
   index;
   rating: number[] = [1, 2, 3];
   comment: string = "";
-  flagged: boolean = false;
   isMine: boolean = true;
+  isModerator: boolean = false;
 
   currentImage:Image;
   imageRatings:Rating[];
   currentRating:Rating;
   imageComments:Comment[];
   currentComment:string = "";
+  averageRating:number;
+  myRating:number = 0;
 
   constructor(public router: Router, private apiService: ApiService, 
     private userSession: UserSessionService, private modalService: NgbModal, private sharedService: SharedService) { }
@@ -44,8 +46,14 @@ export class ImagesComponent implements OnInit {
     // });   
 
     this.token = this.userSession.getToken();
+    if(this.userSession.getModerator()) {
+      console.log('im a mod');
+      this.isModerator = true;
+    } else {
+      console.log('not a mod');
+    }
+
     this.populateUser();
-    this.populateImages();
 
     if(this.router.url === '/home') {
       this.isMine = false;
@@ -62,26 +70,32 @@ export class ImagesComponent implements OnInit {
     console.log(atob(this.token).split(':')[0]);
     this.apiService.loginUser(atob(this.token).split(':')[0],atob(this.token).split(':')[1]).subscribe(
       (data)=>{
-      console.log(data);
-      this.user = data;
-    })
-  }
-
-  populateImages(){
-    this.apiService.getUserImages(this.token).subscribe(
-      (data)=>{
         console.log(data);
-        this.images = data as Image[];
-      }
-    )
-  }
+        this.user = data;
 
-  public flag() {
-    this.flagged = !this.flagged;
-    console.log(this.flagged);
+        if(!this.isModerator) {
+          this.apiService.getUserImagesByID(this.user.id, this.token).subscribe(
+            (data: Image[])=>{
+              this.images = data;
+              console.log(this.images);
+            }
+          );
+        } else {
+          this.apiService.getUserImages(this.token).subscribe(
+            (data: Image[])=>{
+              for(let i = 0; i < data.length; i++) {
+                if(data[i].flagged) {
+                  this.images.push(data[i]);
+                }
+              } 
+            }
+          );
+        }
+      }
+    );
   }
   
-  openModalById(content, id:number){
+  openModalById(content, id:number) {
     //get image info and save it locally for modal
     this.images.forEach(image=>{
       if(image.id == id){
@@ -106,10 +120,6 @@ export class ImagesComponent implements OnInit {
       (data)=>{
         console.log(data);
         this.imageRatings = data as Rating[];
-        console.log(this.imageRatings);
-        this.imageRatings.forEach(rating=>{
-          console.log(rating);
-        });
         
         //if user has rated image then set current rating to the correct rating
         this.imageRatings.forEach(rating=>{
@@ -117,6 +127,10 @@ export class ImagesComponent implements OnInit {
             this.currentRating = rating;
           }
         });
+
+        this.averageRating = this.getAverageRatings();
+        this.myRating = this.currentRating.rating;
+        console.log(this.averageRating);
       }
     );
 
@@ -131,6 +145,25 @@ export class ImagesComponent implements OnInit {
       avg = avg + rating.rating;
     })
     console.log("sum: " + avg);
-    return (avg / this.imageRatings.length);
+    return this.imageRatings.length ? (avg / this.imageRatings.length) : 0;
+  }
+
+  accept() {
+    this.currentImage['accepted']=true;
+    this.currentImage['flagged']=false;
+    this.apiService.putFlagOnImage(this.currentImage.id, this.currentImage, this.token).subscribe(
+      (data) => {
+        window.location.reload();
+      }
+    );
+  }
+
+  decline() {
+    this.apiService.deleteImageDB(this.currentImage.id, this.token).subscribe(
+      (data) => {
+        console.log(data);
+        window.location.reload();
+      }
+    );
   }
 }

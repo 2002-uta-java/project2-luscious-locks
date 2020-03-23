@@ -5,5 +5,11 @@
         <label for="password">Password <input type="password" id="password" class="form-control" [(ngModel)]='password' value='password'></label><br>
         <label><button id="login-btn" class="btn btn-primary" (click)="authenticate()" >Sign in</button></label><br>
         <a routerLink='/signup' >Sign up!</a>
+        <p *ngIf="invalid" >
+            <ngb-alert [dismissible]="true" (close)="closeAlert()">
+              <strong>Invalid username or password</strong>
+            </ngb-alert>
+        </p>
+
     </div>
 </div>

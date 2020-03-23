@@ -5,5 +5,11 @@
         <label for="password">Password <input type="password" id="password" class="form-control" [(ngModel)]='password' value='password'></label><br>
         <label><button id="login-btn" class="btn btn-primary" (click)="authenticate()">Sign up</button></label><br>
         <a routerLink='/signin'>Sign in!</a>
+        <p *ngIf="taken" >
+            <ngb-alert [dismissible]="true" (close)="closeAlert()">
+              <strong>Username is taken</strong>
+            </ngb-alert>
+        </p>
+
     </div>
 </div>

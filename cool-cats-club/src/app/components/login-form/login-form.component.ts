@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { SharedService } from '../../Services/shared.service';
 import { User } from '../profile-info/user';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-login-form',
@@ -21,6 +23,8 @@ export class LoginFormComponent implements OnInit {
   found: boolean = false;
 
   isModerator: boolean = false;
+
+  invalid: boolean;
 
   constructor(private apiService: ApiService,  private sharedService: SharedService, public router: Router, private userSession: UserSessionService) { }
 
@@ -56,10 +60,15 @@ export class LoginFormComponent implements OnInit {
         }
       },
       error=>{
+        this.invalid=true;
         console.log(error.status);
         console.log("Invalid username or password");
       }
     )
+  }
+
+  closeAlert(){
+    window.location.reload();
   }
 
 }

@@ -1,5 +1,10 @@
 <div class="container">
     <h2 class="text-center">Welcome {{user.username}}</h2>
+    <p *ngIf="warned" >
+      <ngb-alert [dismissible]="true" (close)="closeAlert()">
+        <strong>{{user.warning}}</strong>
+      </ngb-alert>
+  </p>
     <div class="container col-8" style="background-color: black;">
         <div class="card" *ngFor='let image of images'>
             <img class="card-img-top" src={{image.url}}>
@@ -20,9 +25,9 @@
 <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">{{currentImage.description}}</h4>
-      <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button> -->
+      <button type="button" class="btn-outline-danger" aria-label="Close" (click)="flagImage()">
+        FLAG
+      </button>
     </div>
     <div class="modal-body">
       <div class="card">
@@ -30,20 +35,42 @@
         <div class="card-body">
             <div class="card-text">
               <p>Posted by: {{currentImage.poster.username}}</p>
-              <p>Average Rating: {{getAverageRatings()}}<br></p>
-              <p *ngIf='currentRating'>
+              <div class="d-flex flex-row align-middle">
+                <p class="mt-2 mr-2">Average Rating: </p>
+                <ng-template #t let-fill="fill">
+                  <span class="star" [class.full]="fill === 100">
+                    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                  </span>
+                </ng-template>
+                <ngb-rating [(rate)]="averageRating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+              </div>
+
+              <div class="d-flex flex-row align-middle">
+                <p class="mt-2 mr-2">My Rating: </p>
+                <ngb-rating [(rate)]="myRating" [max]="5">
+                  <ng-template let-fill="fill" let-index="index">
+                    <span class="star" [class.filled]="fill === 100" [class.bad]="index < myRating">&#9733;</span>
+                  </ng-template>
+                </ngb-rating>
+              </div>
+
+
+              <!-- <p *ngIf='currentRating'>
                 User Rating: {{currentRating.rating}}
-              </p>
+              </p> -->
               <!--User comment-->
               <input class="form-control" type="text" placeholder="leave a comment" [(ngModel)]='currentComment'><br>
               <!--Comments-->
               <table class="table">
-                <thead><tr><th>Comments:</th></tr></thead>
+                <thead><tr><th>Comments:</th><th></th></tr></thead>
                 <tbody>
                   <tr *ngFor='let comment of imageComments'>
                     <td>
                       {{comment.text}}<br>
                       <sub>by: {{comment.author.username}}</sub>
+                    </td>
+                    <td>
+                      <button class="btn btn-outline-danger btn-sm" (click)="flagComment(comment.id)" >flag</button>
                     </td>
                   </tr>
                 </tbody>

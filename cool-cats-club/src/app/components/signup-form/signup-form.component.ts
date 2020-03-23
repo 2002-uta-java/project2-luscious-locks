@@ -66,4 +66,8 @@ export class SignupFormComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  closeAlert(){
+    window.location.reload();
+  }
+
 }
