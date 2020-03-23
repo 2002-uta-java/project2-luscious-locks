@@ -1,6 +1,7 @@
 import { ApiService } from '../../Services/api.service';
 import { UserSessionService } from './../../Services/user-session.service';
 import { Image } from '../homepage/image';
+import { Rating } from '../homepage/rating';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -24,11 +25,11 @@ export class ImagesComponent implements OnInit {
   flagged: boolean = false;
   isMine: boolean = true;
 
-  currentImage: Image;
-  imageRating;
-  currentRating;
-  imageComments;
-  currentComment;
+  currentImage:Image;
+  imageRatings:Rating[];
+  currentRating:Rating;
+  imageComments:Comment[];
+  currentComment:string = "";
 
   constructor(public router: Router, private apiService: ApiService, 
     private userSession: UserSessionService, private modalService: NgbModal, private sharedService: SharedService) { }
@@ -79,7 +80,7 @@ export class ImagesComponent implements OnInit {
     this.flagged = !this.flagged;
     console.log(this.flagged);
   }
-
+  
   openModalById(content, id:number){
     //get image info and save it locally for modal
     this.images.forEach(image=>{
@@ -89,11 +90,47 @@ export class ImagesComponent implements OnInit {
     });
     
     //get comments by image id and save them locally for modal
+    this.apiService.getCommentsOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data);
+        this.imageComments = data as Comment[];
+        console.log(this.imageComments);
+        this.imageComments.forEach(comment=>{
+          console.log(comment);
+        })
+      }
+    );
 
     //get ratings by image id and save them locally for modal
+    this.apiService.getRatingOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data);
+        this.imageRatings = data as Rating[];
+        console.log(this.imageRatings);
+        this.imageRatings.forEach(rating=>{
+          console.log(rating);
+        });
+        
+        //if user has rated image then set current rating to the correct rating
+        this.imageRatings.forEach(rating=>{
+          if(rating.rater.id === this.user.id){
+            this.currentRating = rating;
+          }
+        });
+      }
+    );
 
     //open template modal
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',
-    backdropClass: 'light-grey-backdrop', scrollable: true});
+    backdropClass: 'light-grey-backdrop', scrollable: true});  
+  }
+  
+  getAverageRatings(){
+    let avg:number = 0;
+    this.imageRatings.forEach(rating=>{
+      avg = avg + rating.rating;
+    })
+    console.log("sum: " + avg);
+    return (avg / this.imageRatings.length);
   }
 }
