@@ -7,7 +7,7 @@
         <span>Status: </span>{{status}}
     </div>
     <div class="text-center">
-        <button class="btn" style="background-color:#FFFCF2;border:solid #403D39" data-toggle="modal" data-target="#profileModal">Edit Profile</button>
+        <button (click)="close()" class="btn" style="background-color:#FFFCF2;border:solid #403D39" data-toggle="modal" data-target="#profileModal">Edit Profile</button>
     </div>
 </div>
 
@@ -22,13 +22,16 @@
       </div>
       <div class="modal-body">
         <label>Username: <input [(ngModel)]="newUsername" type="text" class="form-control"></label>
-        <label>Password: <input [(ngModel)]="newPassword" type="text" class="form-control"></label>
+        <label>Password: <input [(ngModel)]="newPassword" type="password" class="form-control"></label>
       </div>
       <div *ngIf="isInvalid" class="text-center" style="color: red">
         Invalid username.
       </div>
       <div *ngIf="isEmpty" class="text-center" style="color: red">
         No changes detected.
+      </div>
+      <div *ngIf="isInvalidChars" class="text-center" style="color: red">
+        Username and Password can only be numbers and characters.
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

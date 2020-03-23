@@ -26,52 +26,52 @@ export class ProfileInfoComponent implements OnInit {
 
   isEmpty: boolean = false;
 
+  isInvalidChars: boolean = false;
+  
   constructor(private apiService: ApiService, private userSession: UserSessionService ){ }
-
+  
   ngOnInit(): void {
     let login = atob(this.userSession.getToken()).split(':');
     this.username = login[0];
     this.password = login[1];
   }
-
+  
   public saveChanges() {
     if(this.newUsername || this.newPassword) {
       this.isEmpty = false;
-      this.apiService.loginUser(this.username, this.password).subscribe(
-        (data) => {
-          let user = data as User;
-          this.apiService.putLoginOnUser(user.id, this.newUsername, this.newPassword, this.userSession.getToken()).subscribe(
-            (data) => {
-                console.log(data);
-                this.username = this.newUsername ? this.newUsername : this.username;
-                this.password = this.newPassword ? this.newPassword : this.password;
-                this.newUsername = '';
-                this.newPassword = '';
-                console.log(this.username);
-                console.log(this.password);
-            }
-          );
-        }
-      );
-      // this.apiService.getUsers(this.userSession.getToken()).subscribe(
-      //   (data) => {
-      //     this.users = data as User[];
-      //     for(let user of this.users) {
-      //       this.isInvalid = this.newUsername === user.username;
-      //       if(this.isInvalid) {
-      //         break;
-      //       }
-      //     }
-      //     if(!this.isInvalid) {
-      //       this.username = this.newUsername ? this.newUsername : this.username;
-      //       this.password = this.newPassword ? this.newPassword : this.password;
-      //       this.newUsername = '';
-      //       this.newPassword = '';
-      //     }
-      //   }
-      // );
+      if(this.newUsername.match('\\s') || this.newPassword.match('\\s')) {
+        this.isInvalidChars = true;
+      } else {
+        this.isInvalidChars = false;
+        this.apiService.loginUser(this.username, this.password).subscribe(
+          (data) => {
+            let user = data as User;
+            this.apiService.putLoginOnUser(user.id, this.newUsername, this.newPassword, this.userSession.getToken()).subscribe(
+              (data) => {
+                  console.log(data);
+                  this.username = this.newUsername ? this.newUsername : this.username;
+                  this.password = this.newPassword ? this.newPassword : this.password;
+                  console.log(this.username);
+                  console.log(this.password);
+                  this.userSession.setToken(`${this.username}:${this.password}`);
+                  console.log(atob(this.userSession.getToken()));
+                  this.newUsername = '';
+                  this.newPassword = '';
+              }
+            );
+          }
+        );
+      }
     } else {
       this.isEmpty = true;
     }
+  }
+
+  public close() {
+    this.newUsername = '';
+    this.newPassword = '';
+    this.isInvalid = false;
+    this.isEmpty = false;
+    this.isInvalidChars = false;
   }
 }

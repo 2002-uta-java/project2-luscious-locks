@@ -1,6 +1,12 @@
 import { ApiService } from '../../Services/api.service';
+import { UserSessionService } from './../../Services/user-session.service';
+import { Image } from '../homepage/image';
+import { Rating } from '../homepage/rating';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SharedService } from '../../Services/shared.service';
+
 
 @Component({
   selector: 'app-images',
@@ -9,32 +15,37 @@ import { Router } from '@angular/router';
 })
 export class ImagesComponent implements OnInit {
 
+  user;
+  token;
   images;
+  dbImages;
   index;
   rating: number[] = [1, 2, 3];
   comment: string = "";
   flagged: boolean = false;
   isMine: boolean = true;
 
-  constructor(public router: Router, private apiService: ApiService) { }
+  currentImage:Image;
+  imageRatings:Rating[];
+  currentRating:Rating;
+  imageComments:Comment[];
+  currentComment:string = "";
+
+  constructor(public router: Router, private apiService: ApiService, 
+    private userSession: UserSessionService, private modalService: NgbModal, private sharedService: SharedService) { }
 
   ngOnInit(){
-    // this.apiService.postImage('https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg').subscribe(
+    // this.apiService.getImages().subscribe(
     //   (data)=>{
     //   console.log(data);
-    // })
-    // this.apiService.getImage('XLfaJkK').subscribe(
-    //   (data)=>{
-    //   console.log(data);
-    // })
+    //   this.images = data;
+    //   this.images = this.images.data;
+    //   console.log(this.images);
+    // });   
 
-    this.apiService.getImages().subscribe(
-      (data)=>{
-      console.log(data);
-      this.images = data;
-      this.images = this.images.data;
-      console.log(this.images);
-    });   
+    this.token = this.userSession.getToken();
+    this.populateUser();
+    this.populateImages();
 
     if(this.router.url === '/home') {
       this.isMine = false;
@@ -46,9 +57,80 @@ export class ImagesComponent implements OnInit {
     // })
   }
 
+  populateUser(){
+    console.log(this.token);
+    console.log(atob(this.token).split(':')[0]);
+    this.apiService.loginUser(atob(this.token).split(':')[0],atob(this.token).split(':')[1]).subscribe(
+      (data)=>{
+      console.log(data);
+      this.user = data;
+    })
+  }
+
+  populateImages(){
+    this.apiService.getUserImages(this.token).subscribe(
+      (data)=>{
+        console.log(data);
+        this.images = data as Image[];
+      }
+    )
+  }
+
   public flag() {
     this.flagged = !this.flagged;
     console.log(this.flagged);
   }
+  
+  openModalById(content, id:number){
+    //get image info and save it locally for modal
+    this.images.forEach(image=>{
+      if(image.id == id){
+        this.currentImage = image;
+      }
+    });
+    
+    //get comments by image id and save them locally for modal
+    this.apiService.getCommentsOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data);
+        this.imageComments = data as Comment[];
+        console.log(this.imageComments);
+        this.imageComments.forEach(comment=>{
+          console.log(comment);
+        })
+      }
+    );
 
+    //get ratings by image id and save them locally for modal
+    this.apiService.getRatingOfImage(this.currentImage.id, this.userSession.getToken()).subscribe(
+      (data)=>{
+        console.log(data);
+        this.imageRatings = data as Rating[];
+        console.log(this.imageRatings);
+        this.imageRatings.forEach(rating=>{
+          console.log(rating);
+        });
+        
+        //if user has rated image then set current rating to the correct rating
+        this.imageRatings.forEach(rating=>{
+          if(rating.rater.id === this.user.id){
+            this.currentRating = rating;
+          }
+        });
+      }
+    );
+
+    //open template modal
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',
+    backdropClass: 'light-grey-backdrop', scrollable: true});  
+  }
+  
+  getAverageRatings(){
+    let avg:number = 0;
+    this.imageRatings.forEach(rating=>{
+      avg = avg + rating.rating;
+    })
+    console.log("sum: " + avg);
+    return (avg / this.imageRatings.length);
+  }
 }

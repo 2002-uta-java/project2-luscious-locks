@@ -1,6 +1,5 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +20,11 @@ export class ApiService {
   //Method to get all users, using Basic Auth
   public getUsers(auth){
     return this.httpClient.get(this.baseUrl+'/users',{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
+  }
+
+  //Method to get all comment
+  public getComments(auth){
+    return this.httpClient.get(this.baseUrl+'/comments',{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
   }
 
   //Log a user in based on provided credentials, returns 401 if user doesn't exist
@@ -44,6 +48,11 @@ export class ApiService {
       return this.httpClient.post(this.baseUrl+'/images', JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
     }
 
+    //Delete image from the DB
+    public deleteImageDB(id:number, auth:string){
+      return this.httpClient.delete(this.baseUrl+`/images/${id}`,{headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
+    }
+
     //Method to get all images of a user
     public getUserImagesByID(id:number, auth:string){
       return this.httpClient.get(this.baseUrl+`/users/${id}/images`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
@@ -51,13 +60,12 @@ export class ApiService {
     
     //Method to get all images by all users
     public getUserImages(auth:string){
-      return this.httpClient.get(this.baseUrl+`/images`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
+      return this.httpClient.get(this.baseUrl+`/images`,{headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
     }
 
-    //Ask Brian about this?
-    //Method to get highest rated cats
-    public getHighestRatedImages(auth:string){
-      return this.httpClient.get(this.baseUrl+`/images/rating`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
+    //Method to get rating by id
+    public getRatingByID(id:number, auth:string){
+      return this.httpClient.get(this.baseUrl+`/rating/${id}`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
     }
 
     //Method to post comment on image
@@ -65,6 +73,18 @@ export class ApiService {
       let data = {'comment': comment};
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
       return this.httpClient.post(this.baseUrl+`/images/${id}/comment`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+    }
+
+    //Method to get all comments by of an image by id
+    public getCommentsOfImage(id:number, auth:string){
+      return this.httpClient.get(this.baseUrl+`/images/${id}/comments`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
+    }    
+
+    //Method to get all ratings by an image by id
+    public getRatingOfImage(id:number, auth:string){
+      const headers = new HttpHeaders ({'Content-Type': 'application/json'});
+      return this.httpClient.get(this.baseUrl+`/images/${id}/ratings`,{params: new HttpParams().set('all', 'true') ,
+        headers: headers.append('Authorization', `Basic ${auth}`)});
     }
 
     //Method to post rating on image
@@ -150,13 +170,13 @@ export class ApiService {
   }
   
   // need image parameter, others are optional; returns 200 on success :)
-  public postImage(image, type='file', name='', title='', description=''){
+  public postImage(image, type='file', description='',  name='', title='', ){
     const formData = new FormData();
     formData.append('image', image);
     formData.append('type', type);
+    formData.append('description', description);
     formData.append('name', name);
     formData.append('title', title);
-    formData.append('description', description);
     return this.httpClient.post(this.apiImageUrl, formData, { headers: new HttpHeaders().set('Authorization', `Bearer ${this.accessToken}`)});
   }
 

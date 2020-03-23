@@ -4,4 +4,5 @@ export interface User{
     muted: boolean;
     banned: boolean;
     moderator: boolean;
+    warning: string;
 }

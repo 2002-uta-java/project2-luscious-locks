@@ -45,26 +45,35 @@ import { ModeratorImagesComponent } from './components/moderator-images/moderato
     BrowserModule,
     NgbModule,
     RouterModule.forRoot([{
-        path: 'home',
-        component: HomepageComponent
-      },{
-        path: 'signin',
-        component: LoginFormComponent
-      },{
-        path: 'signup',
-        component: SignupFormComponent
-      },{
-        path: '',
-        component: LoginFormComponent
-      },{
-        path: 'users',
-        component: UsersComponent
+      path: 'home',
+      component: HomepageComponent
     },{
-        path: 'images',
-        component: ImagesComponent
+      path: 'signin',
+      component: LoginFormComponent
     },{
-        path: 'profile',
-        component: ProfileComponent
+      path: 'signup',
+      component: SignupFormComponent
+    },{
+      path: '',
+      component: LoginFormComponent
+    },{
+      path: 'users',
+      component: UsersComponent
+    },{
+      path: 'images',
+      component: ImagesComponent
+    },{
+      path: 'profile',
+      component: ProfileComponent
+    }, {
+      path: 'moderator-home',
+      component: ModeratorHomeComponent
+    }, {
+      path: 'moderator-users',
+      component: ModeratorUsersComponent
+    }, {
+      path: 'moderator-comments',
+      component: ModeratorCommentsComponent
     }]),
     HttpClientModule,
     FormsModule
