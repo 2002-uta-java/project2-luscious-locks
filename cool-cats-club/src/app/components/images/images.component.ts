@@ -152,7 +152,7 @@ export class ImagesComponent implements OnInit {
     }
     this.currentComment="";
     this.modalService.dismissAll();
-    this.apiService.postRatingOnImage(this.user.id, this.myRating.toString(), this.token).subscribe(
+    this.apiService.postRatingOnImage(this.currentImage.id, this.myRating, this.token).subscribe(
       (data) => {
         console.log(data);
       }
