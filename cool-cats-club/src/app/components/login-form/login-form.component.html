@@ -10,6 +10,11 @@
               <strong>Invalid username or password</strong>
             </ngb-alert>
         </p>
+        <p *ngIf="banned" >
+            <ngb-alert [dismissible]="true" (close)="closeAlert()">
+              <strong>You've been banned</strong>
+            </ngb-alert>
+        </p>
 
     </div>
 </div>

@@ -27,6 +27,8 @@ export class HomepageComponent implements OnInit {
 
   warned:boolean;
 
+  isMuted: boolean;
+
   //Image fields to populate modal
   currentImages:Image[];
   currentImage:Image;
@@ -62,6 +64,8 @@ export class HomepageComponent implements OnInit {
       (data)=>{
       console.log(data);
       this.user = data as User;
+      this.isMuted = this.user.muted;
+      console.log(this.isMuted);
       if(this.user.warning){
         this.warned=true;
       }
@@ -117,7 +121,9 @@ export class HomepageComponent implements OnInit {
                 });
                 
                 this.averageRating = this.getAverageRatings();
-                this.myRating = this.currentRating.rating;
+                if(this.currentRating) {
+                  this.myRating = this.currentRating.rating;
+                }
               }
             );
             //open template modal

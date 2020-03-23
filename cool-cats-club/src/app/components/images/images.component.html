@@ -37,7 +37,9 @@
                 </ngb-rating>
               </div>
               <!--User comment-->
-              <input class="form-control" type="text" placeholder="leave a comment" [(ngModel)]='currentComment'><br>
+              <div *ngIf="!isMuted">
+                <input class="form-control" type="text" placeholder="leave a comment" [(ngModel)]='currentComment'><br>
+              </div>
               <!--Comments-->
               <table class="table">
                 <thead><tr><th>Comments:</th></tr></thead>
@@ -56,7 +58,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      <button type="button" class="btn btn-outline-info" (click)="postInfo()">Save</button>
     </div>
   </div>
 
@@ -73,7 +75,15 @@
         <div class="card-body">
             <div class="card-text">
               <p>Posted by: {{currentImage.poster.username}}</p>
-              <p>Average Rating: {{averageRating}}<br></p>
+              <div class="d-flex flex-row align-middle">
+                <p class="mt-2 mr-2">Average Rating: </p>
+                <ng-template #t let-fill="fill">
+                  <span class="star" [class.full]="fill === 100">
+                    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                  </span>
+                </ng-template>
+                <ngb-rating [(rate)]="averageRating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+              </div>
               <div class="text-center">
                   <p>Keep Image?</p>
                   <img (click)="accept()" class="ml-2 mr-2" src="../../assets/accept.ico" style="cursor: pointer" height="40" width="40"/>
