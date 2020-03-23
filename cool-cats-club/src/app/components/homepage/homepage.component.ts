@@ -184,16 +184,17 @@ export class HomepageComponent implements OnInit {
 
   flagComment(id:number){
     let tempComment:Comment;
+    console.log(id);
     this.apiService.getCommentsByID(id, this.userSession.getToken()).subscribe(
       (data)=>{
         tempComment = data as Comment;
         tempComment['flagged']=true;
         console.log(tempComment + " temp");
-      }
-    );
-    this.apiService.putFlagOnComment(id, tempComment, this.userSession.getToken()).subscribe(
-      (data)=>{
-        console.log(data + " put");
+        this.apiService.putFlagOnComment(id, tempComment, this.userSession.getToken()).subscribe(
+          (data)=>{
+            console.log(data + " put");
+          }
+        );
       }
     );
   }
