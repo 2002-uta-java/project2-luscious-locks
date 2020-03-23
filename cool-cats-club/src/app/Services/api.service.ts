@@ -1,3 +1,4 @@
+import { Comment } from './../components/homepage/comment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -65,14 +66,13 @@ export class ApiService {
 
     //Method to get rating by id
     public getRatingByID(id:number, auth:string){
-      return this.httpClient.get(this.baseUrl+`/rating/${id}`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
+      return this.httpClient.get(this.baseUrl+`/ratings/${id}`,{ headers: new HttpHeaders().set('Authorization', `Basic ${auth}`)});
     }
 
     //Method to post comment on image
-    public postCommentOnImage(id:number, comment:string, auth:string){
-      let data = {'comment': comment};
+    public postCommentOnImage(id:number, comment:Comment, auth:string){
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.post(this.baseUrl+`/images/${id}/comment`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+      return this.httpClient.post(this.baseUrl+`/images/${id}/comments`,JSON.stringify(comment), {headers: headers.append('Authorization', `Basic ${auth}`)});
     }
 
     //Method to get all comments by of an image by id
@@ -91,7 +91,7 @@ export class ApiService {
     public postRatingOnImage(id:number, rating:string, auth:string){
       let data = {'rating': rating};
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.post(this.baseUrl+`/images/${id}/rating`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+      return this.httpClient.post(this.baseUrl+`/images/${id}/ratings`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
     }
 
     //Method to put flag on image
@@ -105,7 +105,7 @@ export class ApiService {
     public putFlagOnComment(id:number, status:boolean, auth:string){
       let data = {'rating': status};
       const headers = new HttpHeaders ({'Content-Type': 'application/json'});
-      return this.httpClient.post(this.baseUrl+`/comments/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
+      return this.httpClient.put(this.baseUrl+`/comments/${id}`,JSON.stringify(data), {headers: headers.append('Authorization', `Basic ${auth}`)});
     }
 
     //Method to put resolution on image, accepted = true/false

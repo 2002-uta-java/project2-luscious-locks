@@ -20,9 +20,9 @@
 <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">{{currentImage.description}}</h4>
-      <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button> -->
+      <button type="button" class="btn-outline-danger" aria-label="Close" (click)="flagImage()">
+        FLAG
+      </button>
     </div>
     <div class="modal-body">
       <div class="card">
@@ -38,12 +38,15 @@
               <input class="form-control" type="text" placeholder="leave a comment" [(ngModel)]='currentComment'><br>
               <!--Comments-->
               <table class="table">
-                <thead><tr><th>Comments:</th></tr></thead>
+                <thead><tr><th>Comments:</th><th></th></tr></thead>
                 <tbody>
                   <tr *ngFor='let comment of imageComments'>
                     <td>
                       {{comment.text}}<br>
                       <sub>by: {{comment.author.username}}</sub>
+                    </td>
+                    <td>
+                      <button class="btn btn-outline-danger btn-sm" (click)="flagComment(comment.id)" >flag</button>
                     </td>
                   </tr>
                 </tbody>
