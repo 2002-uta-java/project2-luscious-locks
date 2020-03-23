@@ -14,18 +14,15 @@ export class ModeratorHomeComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.userSession.getToken()){
-      this.sharedService.isModeratorData.subscribe(
-        (data) => {
-          if(data) {
-            this.sharedService.isSignedInData.emit(true);
-            this.sharedService.moderatorHomeClassData.emit("nav-link active");
-            this.sharedService.moderatorUsersClassData.emit("nav-link");
-            this.sharedService.moderatorCommentsClassData.emit("nav-link");
-          } else {
-            this.router.navigate(['/home']);
-          }
-        }
-      );
+      this.sharedService.isSignedInData.emit(true);
+      if(this.userSession.getModerator) {
+        this.sharedService.isModeratorData.emit(true);
+        this.sharedService.moderatorHomeClassData.emit("nav-link active");
+        this.sharedService.moderatorUsersClassData.emit("nav-link");
+        this.sharedService.moderatorCommentsClassData.emit("nav-link");
+      } else {
+        this.router.navigate(['/home']);
+      }
     }
     else{
       this.router.navigate(['/signin']);

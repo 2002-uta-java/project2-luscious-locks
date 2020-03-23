@@ -29,6 +29,7 @@ export class NavigationComponent implements OnInit {
     );
     this.sharedService.isModeratorData.subscribe(
       (data: boolean) => {
+        if(this.userSession.getModerator)
         this.isModerator = data;
       }
     );
