@@ -24,6 +24,7 @@ export class ImagesComponent implements OnInit {
   comment: string = "";
   flagged: boolean = false;
   isMine: boolean = true;
+  isModerator: boolean = false;
 
   currentImage:Image;
   imageRatings:Rating[];
@@ -44,8 +45,14 @@ export class ImagesComponent implements OnInit {
     // });   
 
     this.token = this.userSession.getToken();
+    if(this.userSession.getModerator()) {
+      console.log('im a mod');
+      this.isModerator = true;
+    } else {
+      console.log('not a mod');
+    }
+
     this.populateUser();
-    this.populateImages();
 
     if(this.router.url === '/home') {
       this.isMine = false;
@@ -62,18 +69,27 @@ export class ImagesComponent implements OnInit {
     console.log(atob(this.token).split(':')[0]);
     this.apiService.loginUser(atob(this.token).split(':')[0],atob(this.token).split(':')[1]).subscribe(
       (data)=>{
-      console.log(data);
-      this.user = data;
-    })
-  }
-
-  populateImages(){
-    this.apiService.getUserImages(this.token).subscribe(
-      (data)=>{
         console.log(data);
-        this.images = data as Image[];
+        this.user = data;
+
+        if(!this.isModerator) {
+          this.apiService.getUserImagesByID(this.user.id, this.token).subscribe(
+            (data)=>{
+              console.log(data);
+              this.images = data as Image[];
+            }
+          );
+        } else {
+          console.log('getall');
+          this.apiService.getUserImages(this.token).subscribe(
+            (data)=>{
+              console.log(data);
+              this.images = data as Image[];
+            }
+          );
+        }
       }
-    )
+    );
   }
 
   public flag() {
