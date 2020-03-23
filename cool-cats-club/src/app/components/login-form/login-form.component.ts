@@ -26,6 +26,8 @@ export class LoginFormComponent implements OnInit {
 
   invalid: boolean;
 
+  banned: boolean;
+
   constructor(private apiService: ApiService,  private sharedService: SharedService, public router: Router, private userSession: UserSessionService) { }
 
   ngOnInit(): void {
@@ -46,17 +48,21 @@ export class LoginFormComponent implements OnInit {
         this.user = data as User;
         console.log(this.user);
         console.log(this.username + ", " + this.password);
-        this.found = true;
-        this.isModerator = this.user.moderator;
-        this.sharedService.isSignedInData.emit(this.found);
-        this.sharedService.isModeratorData.emit(this.isModerator);
-        this.userSession.setToken(`${this.username}:${this.password}`);
-        console.log("token: " + this.userSession.getToken());
-        if(this.isModerator) {
-          this.userSession.setModerator(this.isModerator);
-          this.router.navigate(['/moderator-home'])
-        } else {
-          this.router.navigate(['/home']);
+        if(this.user.banned === false){
+          this.found = true;
+          this.isModerator = this.user.moderator;
+          this.sharedService.isSignedInData.emit(this.found);
+          this.sharedService.isModeratorData.emit(this.isModerator);
+          this.userSession.setToken(`${this.username}:${this.password}`);
+          console.log("token: " + this.userSession.getToken());
+          if(this.isModerator) {
+            this.userSession.setModerator(this.isModerator);
+            this.router.navigate(['/moderator-home'])
+          } else {
+            this.router.navigate(['/home']);
+          }
+        }else{
+          this.banned = true;
         }
       },
       error=>{
