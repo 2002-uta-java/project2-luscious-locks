@@ -16,6 +16,7 @@ export class ModeratorUsersComponent implements OnInit {
     if(this.userSession.getToken()){
       this.sharedService.isSignedInData.emit(true);
       if(this.userSession.getModerator) {
+        console.log('im in users');
         this.sharedService.isModeratorData.emit(true);
         this.sharedService.moderatorHomeClassData.emit("nav-link");
         this.sharedService.moderatorUsersClassData.emit("nav-link active");

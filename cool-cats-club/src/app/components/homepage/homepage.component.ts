@@ -38,6 +38,7 @@ export class HomepageComponent implements OnInit {
         this.router.navigate(['/moderator-home']);
       } else {
         this.sharedService.isSignedInData.emit(true);
+        this.sharedService.isModeratorData.emit(false);
         this.sharedService.homeClassData.emit("nav-link active");
         this.sharedService.profileClassData.emit("nav-link");
         this.token = this.userSession.getToken();

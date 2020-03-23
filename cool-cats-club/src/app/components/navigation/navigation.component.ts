@@ -29,7 +29,6 @@ export class NavigationComponent implements OnInit {
     );
     this.sharedService.isModeratorData.subscribe(
       (data: boolean) => {
-        if(this.userSession.getModerator)
         this.isModerator = data;
       }
     );
@@ -70,6 +69,11 @@ export class NavigationComponent implements OnInit {
   }
   
   showProfile(){
+    if(this.userSession.getModerator()) {
+      console.log('mod on profile click');
+    } else {
+      console.log('not mod!');
+    }
     this.homeClass = "nav-link";
     this.profileclass = "nav-link active";
     this.router.navigate(['/profile']);
@@ -86,6 +90,7 @@ export class NavigationComponent implements OnInit {
     this.moderatorHomeClass = "nav-link";
     this.moderatorUsersClass = "nav-link active";
     this.moderatorCommentsClass = "nav-link";
+    console.log('users');
     this.router.navigate(['/moderator-users']);
    }
 
